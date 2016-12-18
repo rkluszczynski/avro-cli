@@ -1,13 +1,35 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.0.BUILD-SNAPSHOT'
+    }
+    repositories {
+        mavenCentral()
+        maven { url 'https://repo.spring.io/snapshot' }
+        maven { url 'https://repo.spring.io/milestone' }
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
+}
+
 plugins {
     id 'java'
     id 'groovy'
 }
+apply plugin: 'org.springframework.boot'
 
 repositories {
     mavenCentral()
+    maven { url 'https://repo.spring.io/snapshot' }
+    maven { url 'https://repo.spring.io/milestone' }
 }
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 dependencies {
+    compile 'org.springframework.boot:spring-boot-starter'
+
     compile 'org.apache.avro:avro:1.8.1'
     compile 'com.beust:jcommander:1.58'
 
@@ -19,4 +41,16 @@ dependencies {
     // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
     // 'test.useTestNG()' to your build script.
     testCompile 'junit:junit:4.12'
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+
+jar {
+    baseName = 'avro-cli'
+    version = '0.0.1-SNAPSHOT'
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.2.1'
 }
