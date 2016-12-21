@@ -1,4 +1,4 @@
-package io.github.rkluszczynski.tools;
+package io.github.rkluszczynski.avro.cli;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
