@@ -1,5 +1,6 @@
 package io.github.rkluszczynski.avro.cli;
 
+import com.beust.jcommander.JCommander;
 import io.github.rkluszczynski.avro.cli.command.CliCommand;
 import io.github.rkluszczynski.avro.cli.command.CommandException;
 import org.apache.commons.logging.Log;
@@ -7,42 +8,73 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
 
 @Component
 class CliCommandService {
-    private final List<CliCommand> cliCommands;
+    private final Map<String, CliCommand> cliCommands;
+    private final CliMainParameters mainParameters;
+    private final JCommander jCommander;
 
     @Autowired
     CliCommandService(List<CliCommand> cliCommands) {
-        this.cliCommands = cliCommands;
+        this.mainParameters = new CliMainParameters();
+        this.jCommander = createCommander(cliCommands, mainParameters);
+        this.cliCommands = cliCommands.stream()
+                .collect(Collectors.toMap(CliCommand::getCommandName, Function.identity()));
     }
 
     public void executeCommand(String... args) {
         try {
-            if (args.length == 0) {
-                new CommandException("Missing command argument!");
+            jCommander.parse(args);
+
+            if (mainParameters.isHelp() || args.length == 0) {
+                jCommander.usage();
+                return;
             }
 
-            final String command = args[0];
-            final CliCommand cliCommand = cliCommands.stream()
-                    .filter(cmd -> cmd.getCommand().equals(command))
-                    .findAny()
-                    .orElseThrow(() -> new CommandException("No such command: " + command));
+            final String parsedCommand = jCommander.getParsedCommand();
+            final CliCommand cliCommand = cliCommands.get(parsedCommand);
 
-            cliCommand.initialize(
-                    Arrays.copyOfRange(args, 1, args.length)
-            );
-            cliCommand.execute();
+            if (cliCommand.getParameters().isHelp()) {
+                jCommander.usage(parsedCommand);
+                return;
+            }
+            final String stdoutMessage = cliCommand.execute();
+            System.out.println(stdoutMessage);
         } catch (CommandException ex) {
-            if (log.isDebugEnabled()) {
-                log.error(ex.getMessage(), ex);
-            } else {
-                log.error(ex.getMessage());
-            }
+            handleCommandException(ex);
         }
     }
 
+    private void handleCommandException(CommandException ex) {
+        String stderrMessage = String.format("FAILED [%s] %s",
+                isNull(ex.getCause()) ? ex.getClass().getCanonicalName() : ex.getCause().getClass().getCanonicalName(),
+                isNull(ex.getCause()) ? ex.getLocalizedMessage() : ex.getCause().getLocalizedMessage()
+        );
+        System.err.println(stderrMessage);
+
+        if (log.isDebugEnabled()) {
+            log.error(ex.getMessage(), ex);
+        } else {
+            log.error(ex.getMessage());
+        }
+    }
+
+    private JCommander createCommander(List<CliCommand> cliCommands, CliMainParameters commonParameters) {
+        JCommander jCommander = new JCommander(commonParameters);
+        jCommander.setProgramName(PROGRAM_NAME);
+        cliCommands.stream()
+                .forEach(cliCommand -> jCommander.addCommand(cliCommand.getCommandName(), cliCommand.getParameters()));
+        return jCommander;
+    }
+
     private Log log = LogFactory.getLog(CliCommandService.class);
+
+    private static final String PROGRAM_NAME = "avro-cli";
 }

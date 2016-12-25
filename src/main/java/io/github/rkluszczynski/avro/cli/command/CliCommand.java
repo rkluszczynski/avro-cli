@@ -2,9 +2,9 @@ package io.github.rkluszczynski.avro.cli.command;
 
 public interface CliCommand {
 
-    void execute();
+    String execute();
 
-    void initialize(String... args);
+    String getCommandName();
 
-    String getCommand();
+    CliCommandParameters getParameters();
 }

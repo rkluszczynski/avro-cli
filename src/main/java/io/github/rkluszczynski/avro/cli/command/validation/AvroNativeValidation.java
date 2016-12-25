@@ -1,7 +1,7 @@
 package io.github.rkluszczynski.avro.cli.command.validation;
 
-import com.beust.jcommander.JCommander;
 import io.github.rkluszczynski.avro.cli.command.CliCommand;
+import io.github.rkluszczynski.avro.cli.command.CliCommandParameters;
 import io.github.rkluszczynski.avro.cli.command.CommandException;
 import org.apache.avro.SchemaValidationException;
 import org.apache.avro.SchemaValidator;
@@ -13,7 +13,7 @@ public class AvroNativeValidation implements CliCommand {
     private final ValidationParameters validationParameters = new ValidationParameters();
 
     @Override
-    public void execute() {
+    public String execute() {
         final SchemaValidator schemaValidator = createSchemaValidator(validationParameters.getCompatibilityStrategy());
         try {
             schemaValidator.validate(
@@ -23,17 +23,17 @@ public class AvroNativeValidation implements CliCommand {
         } catch (SchemaValidationException ex) {
             throw new CommandException("Could not validate schema.", ex);
         }
-        System.out.println("PASSED");
+        return "PASSED";
     }
 
     @Override
-    public void initialize(String... args) {
-        new JCommander(validationParameters, args);
-    }
-
-    @Override
-    public String getCommand() {
+    public String getCommandName() {
         return "validate";
+    }
+
+    @Override
+    public CliCommandParameters getParameters() {
+        return validationParameters;
     }
 
     private SchemaValidator createSchemaValidator(CompatibilityStrategy compatibilityStrategy) {
@@ -49,7 +49,7 @@ public class AvroNativeValidation implements CliCommand {
                 return validatorBuilder.mutualReadStrategy()
                         .validateAll();
             default:
-                throw new CommandException("Unknown compatibility strategy.");
+                throw new CommandException("Unknown compatibility strategy during validation.");
         }
     }
 }
