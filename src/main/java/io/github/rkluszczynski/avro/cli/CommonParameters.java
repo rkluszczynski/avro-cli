@@ -2,7 +2,7 @@ package io.github.rkluszczynski.avro.cli;
 
 import com.beust.jcommander.Parameter;
 
-class CliMainParameters {
+class CommonParameters {
     @Parameter(
             names = {"--help", "-h"},
             description = "Show help",

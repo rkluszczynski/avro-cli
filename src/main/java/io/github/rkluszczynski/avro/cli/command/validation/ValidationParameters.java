@@ -37,16 +37,26 @@ class ValidationParameters extends CliCommandParameters {
     )
     private List<Schema> previousSchemaFiles = Lists.newArrayList();
 
+    @Parameter(
+            names = {"--latest", "-l"},
+            description = "Use only latest validator."
+    )
+    private boolean onlyLatestValidator = false;
+
     public CompatibilityStrategy getCompatibilityStrategy() {
         return compatibilityStrategy;
     }
 
-    Schema getSchema() {
+    public Schema getSchema() {
         return schema;
     }
 
-    List<Schema> getPreviousSchemaFiles() {
+    public List<Schema> getPreviousSchemaFiles() {
         return previousSchemaFiles;
+    }
+
+    public boolean isOnlyLatestValidator() {
+        return onlyLatestValidator;
     }
 
     private static class CompatibilityStrategyConverter extends EnumConverter<CompatibilityStrategy> {

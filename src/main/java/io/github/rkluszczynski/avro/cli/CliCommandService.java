@@ -18,13 +18,13 @@ import static java.util.Objects.isNull;
 @Component
 class CliCommandService {
     private final Map<String, CliCommand> cliCommands;
-    private final CliMainParameters mainParameters;
+    private final CommonParameters commonParameters;
     private final JCommander jCommander;
 
     @Autowired
     CliCommandService(List<CliCommand> cliCommands) {
-        this.mainParameters = new CliMainParameters();
-        this.jCommander = createCommander(cliCommands, mainParameters);
+        this.commonParameters = new CommonParameters();
+        this.jCommander = createCommander(cliCommands, commonParameters);
         this.cliCommands = cliCommands.stream()
                 .collect(Collectors.toMap(CliCommand::getCommandName, Function.identity()));
     }
@@ -33,7 +33,7 @@ class CliCommandService {
         try {
             jCommander.parse(args);
 
-            if (mainParameters.isHelp() || args.length == 0) {
+            if (commonParameters.isHelp() || args.length == 0) {
                 jCommander.usage();
                 return;
             }
@@ -66,7 +66,7 @@ class CliCommandService {
         }
     }
 
-    private JCommander createCommander(List<CliCommand> cliCommands, CliMainParameters commonParameters) {
+    private JCommander createCommander(List<CliCommand> cliCommands, CommonParameters commonParameters) {
         JCommander jCommander = new JCommander(commonParameters);
         jCommander.setProgramName(PROGRAM_NAME);
         cliCommands.stream()

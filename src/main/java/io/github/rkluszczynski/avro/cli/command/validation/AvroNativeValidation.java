@@ -14,7 +14,11 @@ public class AvroNativeValidation implements CliCommand {
 
     @Override
     public String execute() {
-        final SchemaValidator schemaValidator = createSchemaValidator(validationParameters.getCompatibilityStrategy());
+        final SchemaValidator schemaValidator = createSchemaValidator(
+                validationParameters.getCompatibilityStrategy(),
+                validationParameters.isOnlyLatestValidator()
+        );
+
         try {
             schemaValidator.validate(
                     validationParameters.getSchema(),
@@ -36,20 +40,20 @@ public class AvroNativeValidation implements CliCommand {
         return validationParameters;
     }
 
-    private SchemaValidator createSchemaValidator(CompatibilityStrategy compatibilityStrategy) {
+    private SchemaValidator createSchemaValidator(CompatibilityStrategy compatibilityStrategy,
+                                                  boolean onlyLatestValidator) {
         final SchemaValidatorBuilder validatorBuilder = new SchemaValidatorBuilder();
         switch (compatibilityStrategy) {
             case BACKWARD:
-                return validatorBuilder.canBeReadStrategy()
-                        .validateAll();
+                return createLatestOrAllValidator(validatorBuilder.canBeReadStrategy(), onlyLatestValidator);
             case FORWARD:
-                return validatorBuilder.canReadStrategy()
-                        .validateAll();
-            case FULL:
-                return validatorBuilder.mutualReadStrategy()
-                        .validateAll();
+                return createLatestOrAllValidator(validatorBuilder.canReadStrategy(), onlyLatestValidator);
             default:
-                throw new CommandException("Unknown compatibility strategy during validation.");
+                return createLatestOrAllValidator(validatorBuilder.mutualReadStrategy(), onlyLatestValidator);
         }
+    }
+
+    private SchemaValidator createLatestOrAllValidator(SchemaValidatorBuilder validatorBuilder, boolean onlyLatest) {
+        return onlyLatest ? validatorBuilder.validateLatest() : validatorBuilder.validateAll();
     }
 }

@@ -28,10 +28,10 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter'
+    compile 'org.springframework.boot:spring-boot-starter',
 
-    compile 'org.apache.avro:avro:1.8.1'
-    compile 'com.beust:jcommander:1.58'
+            'org.apache.avro:avro:1.8.1',
+            'com.beust:jcommander:1.58'
 
     // The production code uses the SLF4J logging API at compile time
     compile 'org.slf4j:slf4j-api:1.7.21'
@@ -42,7 +42,12 @@ dependencies {
     // 'test.useTestNG()' to your build script.
     testCompile 'junit:junit:4.12'
 
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile 'com.github.tomakehurst:wiremock:2.1.11',
+            'cglib:cglib-nodep:3.2.4',
+            'org.objenesis:objenesis:2.4',
+            'org.spockframework:spock-core:1.0-groovy-2.4',
+            'org.spockframework:spock-spring:1.0-groovy-2.4',
+            'org.springframework.boot:spring-boot-starter-test'
 }
 
 jar {

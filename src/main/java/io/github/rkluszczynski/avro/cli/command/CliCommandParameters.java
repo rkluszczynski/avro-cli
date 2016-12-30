@@ -9,7 +9,7 @@ public abstract class CliCommandParameters {
             help = true,
             hidden = true
     )
-    private boolean help;
+    private boolean help = false;
 
     public boolean isHelp() {
         return help;
