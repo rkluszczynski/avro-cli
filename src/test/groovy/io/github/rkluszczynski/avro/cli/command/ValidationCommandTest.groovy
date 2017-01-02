@@ -14,7 +14,7 @@ class ValidationCommandTest extends Specification {
     OutputCapture capture = new OutputCapture()
 
     @Unroll
-    'should pass validation'() {
+    'should pass validation for #compatibilityStrategy'() {
         when:
         commandService.executeCommand('validate',
                 '--compatibility', compatibilityStrategy,
@@ -30,6 +30,14 @@ class ValidationCommandTest extends Specification {
         'backward'            | 'schema2-string-null-field.json' | 'schema1-string-field.json'
         'forward'             | 'schema1-string-field.json'      | 'schema2-string-null-field.json'
         'full'                | 'schema1-string-field.json'      | 'schema0-no-fields.json'
+    }
+
+    def 'should fail when no file found'() {
+        when:
+        commandService.executeCommand('validate', '--compatibility', 'FULL', '--schemaFile', 'not-existing-file.avsc')
+
+        then:
+        trimmedOutput().startsWith('FAILED [java.nio.file.NoSuchFileException] not-existing-file.avsc')
     }
 
     private trimmedOutput() {

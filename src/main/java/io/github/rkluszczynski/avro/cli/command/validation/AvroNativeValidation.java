@@ -8,6 +8,8 @@ import org.apache.avro.SchemaValidator;
 import org.apache.avro.SchemaValidatorBuilder;
 import org.springframework.stereotype.Component;
 
+import static io.github.rkluszczynski.avro.cli.command.CommandNames.VALIDATE;
+
 @Component
 public class AvroNativeValidation implements CliCommand {
     private final ValidationParameters validationParameters = new ValidationParameters();
@@ -32,7 +34,7 @@ public class AvroNativeValidation implements CliCommand {
 
     @Override
     public String getCommandName() {
-        return "validate";
+        return VALIDATE;
     }
 
     @Override
