@@ -19,30 +19,30 @@ import static java.util.Objects.isNull;
 class CliCommandService {
     private final Map<String, CliCommand> cliCommands;
     private final CommonParameters commonParameters;
-    private final JCommander jCommander;
+    private final JCommander commander;
 
     @Autowired
     CliCommandService(List<CliCommand> cliCommands) {
         this.commonParameters = new CommonParameters();
-        this.jCommander = createCommander(cliCommands, commonParameters);
+        this.commander = createCommander(cliCommands, commonParameters);
         this.cliCommands = cliCommands.stream()
                 .collect(Collectors.toMap(CliCommand::getCommandName, Function.identity()));
     }
 
     public void executeCommand(String... args) {
         try {
-            jCommander.parse(args);
+            commander.parse(args);
 
             if (commonParameters.isHelp() || args.length == 0) {
-                jCommander.usage();
+                commander.usage();
                 return;
             }
 
-            final String parsedCommand = jCommander.getParsedCommand();
+            final String parsedCommand = commander.getParsedCommand();
             final CliCommand cliCommand = cliCommands.get(parsedCommand);
 
             if (cliCommand.getParameters().isHelp()) {
-                jCommander.usage(parsedCommand);
+                commander.usage(parsedCommand);
                 return;
             }
             final String stdoutMessage = cliCommand.execute();
@@ -67,11 +67,11 @@ class CliCommandService {
     }
 
     private JCommander createCommander(List<CliCommand> cliCommands, CommonParameters commonParameters) {
-        JCommander jCommander = new JCommander(commonParameters);
-        jCommander.setProgramName(PROGRAM_NAME);
+        JCommander commander = new JCommander(commonParameters);
+        commander.setProgramName(PROGRAM_NAME);
         cliCommands.stream()
-                .forEach(cliCommand -> jCommander.addCommand(cliCommand.getCommandName(), cliCommand.getParameters()));
-        return jCommander;
+                .forEach(cliCommand -> commander.addCommand(cliCommand.getCommandName(), cliCommand.getParameters()));
+        return commander;
     }
 
     private Log log = LogFactory.getLog(CliCommandService.class);

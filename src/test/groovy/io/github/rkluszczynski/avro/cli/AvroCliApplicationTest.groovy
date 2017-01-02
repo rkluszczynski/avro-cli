@@ -8,7 +8,7 @@ import spock.lang.Specification
 
 @ContextConfiguration
 @SpringBootTest
-class AvroCliApplicationTests extends Specification {
+class AvroCliApplicationTest extends Specification {
 
     @Autowired
     ApplicationContext context

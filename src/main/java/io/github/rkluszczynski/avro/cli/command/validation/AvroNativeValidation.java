@@ -45,9 +45,9 @@ public class AvroNativeValidation implements CliCommand {
         final SchemaValidatorBuilder validatorBuilder = new SchemaValidatorBuilder();
         switch (compatibilityStrategy) {
             case BACKWARD:
-                return createLatestOrAllValidator(validatorBuilder.canBeReadStrategy(), onlyLatestValidator);
-            case FORWARD:
                 return createLatestOrAllValidator(validatorBuilder.canReadStrategy(), onlyLatestValidator);
+            case FORWARD:
+                return createLatestOrAllValidator(validatorBuilder.canBeReadStrategy(), onlyLatestValidator);
             default:
                 return createLatestOrAllValidator(validatorBuilder.mutualReadStrategy(), onlyLatestValidator);
         }
