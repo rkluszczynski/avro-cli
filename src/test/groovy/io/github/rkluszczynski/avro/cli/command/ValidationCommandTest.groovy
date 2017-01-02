@@ -32,12 +32,23 @@ class ValidationCommandTest extends Specification {
         'full'                | 'schema1-string-field.json'      | 'schema0-no-fields.json'
     }
 
+    def 'should fail when native validation fails'() {
+        when:
+        commandService.executeCommand('validate', '--compatibility', 'FULL',
+                '--schemaFile', prepareSchemaValidationPath('schema0-no-fields.json'),
+                '--previousSchemaFile', prepareSchemaValidationPath('schema3-int-field.json')
+        )
+
+        then:
+        trimmedOutput().startsWith('FAILED [org.apache.avro.SchemaValidationException] Unable to read schema:')
+    }
+
     def 'should fail when no file found'() {
         when:
         commandService.executeCommand('validate', '--compatibility', 'FULL', '--schemaFile', 'not-existing-file.avsc')
 
         then:
-        trimmedOutput().startsWith('FAILED [java.nio.file.NoSuchFileException] not-existing-file.avsc')
+        trimmedOutput() == 'FAILED [java.nio.file.NoSuchFileException] not-existing-file.avsc'
     }
 
     private trimmedOutput() {
