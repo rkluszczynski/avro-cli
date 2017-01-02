@@ -6,6 +6,8 @@ import org.springframework.context.ApplicationContext
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
+import static java.util.Objects.nonNull
+
 @ContextConfiguration
 @SpringBootTest
 class AvroCliApplicationTest extends Specification {
@@ -15,6 +17,6 @@ class AvroCliApplicationTest extends Specification {
 
     def 'should boot up without errors'() {
         expect:
-        context != null
+        nonNull(context)
     }
 }

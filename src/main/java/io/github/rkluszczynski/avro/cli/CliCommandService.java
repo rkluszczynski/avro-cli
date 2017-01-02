@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import static java.util.Objects.isNull;
 
 @Component
-class CliCommandService {
+public class CliCommandService {
     private final Map<String, CliCommand> cliCommands;
     private final CommonParameters commonParameters;
     private final JCommander commander;
@@ -29,6 +29,11 @@ class CliCommandService {
                 .collect(Collectors.toMap(CliCommand::getCommandName, Function.identity()));
     }
 
+    /**
+     * This method executes command based on passed arguments.
+     *
+     * @param args Commandline arguments
+     */
     public void executeCommand(String... args) {
         try {
             commander.parse(args);

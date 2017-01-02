@@ -1,0 +1,6 @@
+{
+  "type": "record",
+  "name": "myRecord",
+  "namespace": "io.github.rkluszczynski.avro.cli",
+  "fields": []
+}

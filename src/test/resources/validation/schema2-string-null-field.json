@@ -5,7 +5,10 @@
   "fields": [
     {
       "name": "fieldName",
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "default": ""
     }
   ]
