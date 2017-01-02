@@ -66,8 +66,6 @@ public class CliCommandService {
 
         if (log.isDebugEnabled()) {
             log.error(ex.getMessage(), ex);
-        } else {
-            log.error(ex.getMessage());
         }
     }
 
