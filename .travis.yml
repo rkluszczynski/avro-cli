@@ -1,10 +1,17 @@
 language: java
-
 jdk:
   - oraclejdk8
-
 before_install:
   - chmod +x gradlew
-
 after_success:
   - ./gradlew jacocoTestReport coveralls
+deploy:
+  provider: releases
+  api_key:
+    secure: uDlDTwGFkNQOsm9GBLrBoRMB2ObwNJmtdoCtTn763dIfgxxSZ2DpniPUVXUfwUMz81bYtLxLeO4gjW/R2A7HdmwtSZUkF6WtLxeJPbDPeb/98CgLEKihFvS+B5DS9YVCtsNImoH3w8pJp2X0U31I5Gek3pvnksbltYG6eLFOabjjUCFaPi8mMWlzH9sAI18Srz5phHheUwg/vc4QKokamu0uxwHx98nDT9UJWE4mBEb+uDxr1f0jQSX0fEcFcASBfusl8LQk7ey//59xNNZcKKbEjMCG0so4eRxRvgDeXCYfMFV4GQWf+vx6K3nqK4czRXevvpfJhoS1SdbNb+3j0eSPGj1OaWE82B83YSBD17xdYwjwsMVsDft9rQpCY3SxpUYxt7Bjsq5hhA2BTq6Bv+Zgct0DjnkYdyoVQKnbpPteC5Mqd0nfXbvKRfGNBAmCdH0ODpcMbn1eJkMAiHmS2q1BveRm46dcQcmRQ+lxc7g6zdJgI0yvk4ibk3Nc0NdbHzJkMWTDEC5bF2sHLUTR6MiulfCBYBYmPL71scXEvs/CmKHTAahwJCtb+J/HG5RI0opsoPpDMVN1YK5YG4cGTUM7soWXw6TlAgjS280A1bZ1+USj+792zmzCLQGy4Z+dsMUvwm6FEtkvWwPIfk34QzYkldHFqBkqM1sjHIfjjz0=
+  file_glob: true
+  file: "build/libs/avro-cli-*.jar"
+  skip_cleanup: true
+  on:
+    repo: rkluszczynski/avro-cli
+    tags: true
