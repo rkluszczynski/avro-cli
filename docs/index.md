@@ -1,6 +1,3 @@
-avro-cli
-========
-
 # Quickstart
 
 To see usage, you need to have Java 8 installed. Then just download latest release and type:
@@ -13,7 +10,7 @@ where X.X.X stands for version.
 
 # Commands
 
-## Native Avro validation
+### Native Avro validation
 
 ```
 Usage: validate [options]
