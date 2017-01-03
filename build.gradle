@@ -31,9 +31,15 @@ project.version = scmVersion.version
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+def versions = [
+        avro      : '1.8.1',
+        checkstyle: '6.3',
+        gradle    : '3.2.1',
+]
+
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter',
-            'org.apache.avro:avro:1.8.1',
+            "org.apache.avro:avro:${versions.avro}",
             'com.beust:jcommander:1.58'
 
     testCompile 'com.github.tomakehurst:wiremock:2.1.11',
@@ -58,7 +64,7 @@ jacocoTestReport {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.2.1'
+    gradleVersion = "${versions.gradle}"
 }
 
 configurations {
@@ -66,10 +72,6 @@ configurations {
         transitive = false
     }
 }
-
-def versions = [
-        checkstyle: '6.3',
-]
 
 dependencies {
     checkstyleConfig "com.puppycrawl.tools:checkstyle:${versions.checkstyle}"
