@@ -1,0 +1,19 @@
+{
+  "type": "record",
+  "name": "PriorityRecord",
+  "namespace": "io.github.rkluszczynski.avro.cli",
+  "fields": [
+    {
+      "name": "priority",
+      "type": {
+        "type": "enum",
+        "name": "PriorityType",
+        "symbols": [
+          "HIGH",
+          "NORMAL",
+          "LOW"
+        ]
+      }
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.beust.jcommander.converters.EnumConverter;
 import io.github.rkluszczynski.avro.cli.command.CliCommandParameters;
+import io.github.rkluszczynski.avro.cli.util.SchemaFileConverter;
 import org.apache.avro.Schema;
 
 import java.util.List;
@@ -23,7 +24,7 @@ class ValidationParameters extends CliCommandParameters {
     private CompatibilityStrategy compatibilityStrategy = FULL;
 
     @Parameter(
-            names = {"--schemaFile", "-f"},
+            names = {"--schemaFile", "-s"},
             converter = SchemaFileConverter.class,
             description = "Source of schema to read.",
             required = true

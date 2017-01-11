@@ -1,14 +1,14 @@
-package io.github.rkluszczynski.avro.cli.command.validation;
+package io.github.rkluszczynski.avro.cli.util;
 
 import com.beust.jcommander.IStringConverter;
-import io.github.rkluszczynski.avro.cli.command.CommandException;
+import io.github.rkluszczynski.avro.cli.CommandException;
 import org.apache.avro.Schema;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-class SchemaFileConverter implements IStringConverter<Schema> {
+public class SchemaFileConverter implements IStringConverter<Schema> {
     @Override
     public Schema convert(String value) {
         try {
