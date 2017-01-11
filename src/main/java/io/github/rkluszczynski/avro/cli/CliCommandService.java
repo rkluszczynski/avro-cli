@@ -1,6 +1,7 @@
 package io.github.rkluszczynski.avro.cli;
 
 import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
 import io.github.rkluszczynski.avro.cli.command.CliCommand;
 import io.github.rkluszczynski.avro.cli.command.CommandException;
 import org.apache.commons.logging.Log;
@@ -18,13 +19,13 @@ import static java.util.Objects.isNull;
 @Component
 public class CliCommandService {
     private final Map<String, CliCommand> cliCommands;
-    private final CommonParameters commonParameters;
+    private final CliMainParameters cliMainParameters;
     private final JCommander commander;
 
     @Autowired
     CliCommandService(List<CliCommand> cliCommands) {
-        this.commonParameters = new CommonParameters();
-        this.commander = createCommander(cliCommands, commonParameters);
+        this.cliMainParameters = new CliMainParameters();
+        this.commander = createCommander(cliCommands, cliMainParameters);
         this.cliCommands = cliCommands.stream()
                 .collect(Collectors.toMap(CliCommand::getCommandName, Function.identity()));
     }
@@ -38,7 +39,7 @@ public class CliCommandService {
         try {
             commander.parse(args);
 
-            if (commonParameters.isHelp() || args.length == 0) {
+            if (cliMainParameters.isHelp() || args.length == 0) {
                 commander.usage();
                 return;
             }
@@ -50,14 +51,14 @@ public class CliCommandService {
                 commander.usage(parsedCommand);
                 return;
             }
-            final String stdoutMessage = cliCommand.execute();
+            final String stdoutMessage = cliCommand.execute(cliMainParameters);
             System.out.println(stdoutMessage);
-        } catch (CommandException ex) {
+        } catch (CommandException | ParameterException ex) {
             handleCommandException(ex);
         }
     }
 
-    private void handleCommandException(CommandException ex) {
+    private void handleCommandException(RuntimeException ex) {
         String stderrMessage = String.format("FAILED [%s] %s",
                 isNull(ex.getCause()) ? ex.getClass().getCanonicalName() : ex.getCause().getClass().getCanonicalName(),
                 isNull(ex.getCause()) ? ex.getLocalizedMessage() : ex.getCause().getLocalizedMessage()
@@ -69,8 +70,8 @@ public class CliCommandService {
         }
     }
 
-    private JCommander createCommander(List<CliCommand> cliCommands, CommonParameters commonParameters) {
-        JCommander commander = new JCommander(commonParameters);
+    private JCommander createCommander(List<CliCommand> cliCommands, CliMainParameters cliMainParameters) {
+        JCommander commander = new JCommander(cliMainParameters);
         commander.setProgramName(PROGRAM_NAME);
         cliCommands.stream()
                 .forEach(cliCommand -> commander.addCommand(cliCommand.getCommandName(), cliCommand.getParameters()));

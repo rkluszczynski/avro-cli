@@ -1,5 +1,6 @@
 package io.github.rkluszczynski.avro.cli.command.validation;
 
+import io.github.rkluszczynski.avro.cli.CliMainParameters;
 import io.github.rkluszczynski.avro.cli.command.CliCommand;
 import io.github.rkluszczynski.avro.cli.command.CliCommandParameters;
 import io.github.rkluszczynski.avro.cli.command.CommandException;
@@ -13,7 +14,7 @@ public class AvroNativeValidation implements CliCommand {
     private final ValidationParameters validationParameters = new ValidationParameters();
 
     @Override
-    public String execute() {
+    public String execute(CliMainParameters mainParameters) {
         final SchemaValidator schemaValidator = createSchemaValidator(
                 validationParameters.getCompatibilityStrategy(),
                 validationParameters.isOnlyLatestValidator()
