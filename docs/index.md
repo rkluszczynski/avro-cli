@@ -1,16 +1,40 @@
 # Quickstart
 
-To see usage, you need to have Java 8 installed. Then just download latest release and type:
+To see usage, you need to have Java 8 installed. Then just download latest release version 
+[here](https://github.com/rkluszczynski/avro-cli/releases/download/avro-cli-X.X.X/avro-cli-X.X.X.jar).
+
+Next, just type:
 
 ```bash
 java -jar avro-cli-X.X.X.jar 
 ```
 
-where X.X.X stands for version.
+for help.
 
 # Commands
 
-### Native Avro validation
+### convert: Avro <-> JSON conversion
+
+Note, that this conversion is without schema included in Avro files.
+
+```
+Usage: convert [options]
+  Options:
+    --inputFile, -i
+      Source file with message.
+    --outputFile, -o
+      Target file of converted message.
+  * --schemaFile, -s
+      Source of schema to read.
+    --toAvro, -a
+      Convert from JSON to Avro.
+      Default: false
+    --toJson, -j
+      Convert from Avro to JSON.
+      Default: false
+```
+
+### validate: Native Avro validation
 
 ```
 Usage: validate [options]
@@ -25,9 +49,8 @@ Usage: validate [options]
     --previousSchemaFile, -p
       Sources of previous schemas in order of appearance in command line.
       Default: []
-  * --schemaFile, -f
+  * --schemaFile, -s
       Source of schema to read.
-
 ```
 
 Example of usage:

@@ -23,7 +23,13 @@ plugins {
 }
 apply plugin: 'org.springframework.boot'
 
-scmVersion.tag.prefix = project.name
+scmVersion {
+    tag.prefix = project.name
+
+    hooks {
+        pre 'fileUpdate', [file: 'docs/index.md', pattern: { v, c -> /X.X.X/ }, replacement: { v, c -> "$v" }]
+    }
+}
 
 group = 'io.github.rkluszczynski'
 project.version = scmVersion.version
