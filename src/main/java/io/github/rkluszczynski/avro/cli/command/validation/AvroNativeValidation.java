@@ -1,9 +1,9 @@
 package io.github.rkluszczynski.avro.cli.command.validation;
 
 import io.github.rkluszczynski.avro.cli.CliMainParameters;
+import io.github.rkluszczynski.avro.cli.CommandException;
 import io.github.rkluszczynski.avro.cli.command.CliCommand;
 import io.github.rkluszczynski.avro.cli.command.CliCommandParameters;
-import io.github.rkluszczynski.avro.cli.command.CommandException;
 import org.apache.avro.SchemaValidationException;
 import org.apache.avro.SchemaValidator;
 import org.apache.avro.SchemaValidatorBuilder;

@@ -45,6 +45,14 @@ class ConversionCommandTest extends Specification {
         compareFiles(prepareFilePath('message-priority.json'), tmpFile.canonicalPath)
     }
 
+    def 'should fails when no target format is indicated'() {
+        when:
+        commandService.executeCommand('convert', '--schemaFile', prepareFilePath('schema-enum.avsc'))
+
+        then:
+        trimmedOutput() == 'FAILED [io.github.rkluszczynski.avro.cli.CommandException] Exactly one of target format should be indicated (Avro or JSON).'
+    }
+
     private trimmedOutput() {
         capture.toString().trim()
     }

@@ -1,4 +1,4 @@
-package io.github.rkluszczynski.avro.cli.command;
+package io.github.rkluszczynski.avro.cli;
 
 public class CommandException extends RuntimeException {
     public CommandException(String message) {

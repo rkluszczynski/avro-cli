@@ -1,9 +1,9 @@
 package io.github.rkluszczynski.avro.cli.command.conversion;
 
 import io.github.rkluszczynski.avro.cli.CliMainParameters;
+import io.github.rkluszczynski.avro.cli.CommandException;
 import io.github.rkluszczynski.avro.cli.command.CliCommand;
 import io.github.rkluszczynski.avro.cli.command.CliCommandParameters;
-import io.github.rkluszczynski.avro.cli.command.CommandException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;

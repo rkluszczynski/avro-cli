@@ -3,7 +3,6 @@ package io.github.rkluszczynski.avro.cli;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import io.github.rkluszczynski.avro.cli.command.CliCommand;
-import io.github.rkluszczynski.avro.cli.command.CommandException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
