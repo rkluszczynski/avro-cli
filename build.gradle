@@ -29,6 +29,7 @@ scmVersion {
     hooks {
         pre 'fileUpdate',
                 [file: 'docs/index.md', pattern: { v, c -> /avro-cli-$v/ }, replacement: { v, c -> "avro-cli-$v" }]
+        pre 'commit'
     }
 }
 
@@ -42,6 +43,7 @@ def versions = [
         avro      : '1.8.1',
         checkstyle: '6.3',
         gradle    : '3.2.1',
+        spock     : '1.0-groovy-2.4'
 ]
 
 dependencies {
@@ -49,11 +51,11 @@ dependencies {
             "org.apache.avro:avro:${versions.avro}",
             'com.beust:jcommander:1.58'
 
-    testCompile 'com.github.tomakehurst:wiremock:2.1.11',
+    testCompile 'com.github.tomakehurst:wiremock:2.5.0',
             'cglib:cglib-nodep:3.2.4',
             'org.objenesis:objenesis:2.4',
-            'org.spockframework:spock-core:1.0-groovy-2.4',
-            'org.spockframework:spock-spring:1.0-groovy-2.4',
+            "org.spockframework:spock-core:${versions.spock}",
+            "org.spockframework:spock-spring:${versions.spock}",
             'org.springframework.boot:spring-boot-starter-test'
 }
 
@@ -70,10 +72,6 @@ jacocoTestReport {
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = "${versions.gradle}"
-}
-
 configurations {
     checkstyleConfig {
         transitive = false
@@ -87,4 +85,8 @@ dependencies {
 checkstyle {
     toolVersion = "${versions.checkstyle}"
 //    config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'google_checks.xml')
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = "${versions.gradle}"
 }
