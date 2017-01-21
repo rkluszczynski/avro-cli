@@ -76,7 +76,7 @@ resources folder to serve schemas files.
 Finally, validate schema against empty history using command below.
 
 ```bash
-java -jar build/libs/avro-cli-0.2.1.jar validate -s http://localhost:8000/schema-no-fields.avsc
+java -jar avro-cli-0.2.1.jar validate -s http://localhost:8000/schema-no-fields.avsc
 ```
 
 # Credits
