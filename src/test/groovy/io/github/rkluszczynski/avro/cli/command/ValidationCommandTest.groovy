@@ -29,13 +29,13 @@ class ValidationCommandTest extends Specification {
         compatibilityStrategy | nextSchemaFilename               | previousSchemaFilename
         'backward'            | 'schema2-string-null-field.json' | 'schema1-string-field.json'
         'forward'             | 'schema1-string-field.json'      | 'schema2-string-null-field.json'
-        'full'                | 'schema1-string-field.json'      | 'schema0-no-fields.json'
+        'full'                | 'schema1-string-field.json'      | '../schema-no-fields.avsc'
     }
 
     def 'should fail when native validation fails'() {
         when:
         commandService.executeCommand('validate', '--compatibility', 'FORWARD',
-                '--schemaFile', prepareSchemaValidationPath('schema0-no-fields.json'),
+                '--schemaFile', prepareSchemaValidationPath('../schema-no-fields.avsc'),
                 '--previousSchemaFile', prepareSchemaValidationPath('schema3-int-field.json')
         )
 
@@ -48,7 +48,8 @@ class ValidationCommandTest extends Specification {
         commandService.executeCommand('validate', '--schemaFile', 'not-existing-file.avsc')
 
         then:
-        trimmedOutput() == 'FAILED [java.nio.file.NoSuchFileException] not-existing-file.avsc'
+        trimmedOutput().startsWith('FAILED [java.io.FileNotFoundException] ')
+        trimmedOutput().endsWith('not-existing-file.avsc (No such file or directory)')
     }
 
     private trimmedOutput() {

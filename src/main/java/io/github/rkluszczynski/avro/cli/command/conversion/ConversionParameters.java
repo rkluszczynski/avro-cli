@@ -3,7 +3,7 @@ package io.github.rkluszczynski.avro.cli.command.conversion;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import io.github.rkluszczynski.avro.cli.command.CliCommandParameters;
-import io.github.rkluszczynski.avro.cli.util.SchemaFileConverter;
+import io.github.rkluszczynski.avro.cli.util.SchemaSourceConverter;
 import org.apache.avro.Schema;
 
 @Parameters(
@@ -12,7 +12,7 @@ import org.apache.avro.Schema;
 class ConversionParameters extends CliCommandParameters {
     @Parameter(
             names = {"--schemaFile", "-s"},
-            converter = SchemaFileConverter.class,
+            converter = SchemaSourceConverter.class,
             description = "Source of schema to read.",
             required = true
     )

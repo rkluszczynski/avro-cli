@@ -5,7 +5,7 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.beust.jcommander.converters.EnumConverter;
 import io.github.rkluszczynski.avro.cli.command.CliCommandParameters;
-import io.github.rkluszczynski.avro.cli.util.SchemaFileConverter;
+import io.github.rkluszczynski.avro.cli.util.SchemaSourceConverter;
 import org.apache.avro.Schema;
 
 import java.util.List;
@@ -25,7 +25,7 @@ class ValidationParameters extends CliCommandParameters {
 
     @Parameter(
             names = {"--schemaFile", "-s"},
-            converter = SchemaFileConverter.class,
+            converter = SchemaSourceConverter.class,
             description = "Source of schema to read.",
             required = true
     )
@@ -33,7 +33,7 @@ class ValidationParameters extends CliCommandParameters {
 
     @Parameter(
             names = {"--previousSchemaFile", "-p"},
-            converter = SchemaFileConverter.class,
+            converter = SchemaSourceConverter.class,
             description = "Sources of previous schemas in order of appearance in command line."
     )
     private List<Schema> previousSchemaFiles = Lists.newArrayList();
