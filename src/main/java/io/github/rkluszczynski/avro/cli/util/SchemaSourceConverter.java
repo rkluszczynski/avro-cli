@@ -11,8 +11,6 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Optional;
 
-import static java.util.Objects.isNull;
-
 public class SchemaSourceConverter implements IStringConverter<Schema> {
     @Override
     public Schema convert(String value) {
@@ -35,9 +33,7 @@ public class SchemaSourceConverter implements IStringConverter<Schema> {
         try {
             return Optional.of(Paths.get(filePath).toUri().toURL());
         } catch (MalformedURLException e) {
-            if (isNull(urlException)) {
-                urlException = e;
-            }
+            urlException = e;
         }
         return Optional.empty();
     }
