@@ -28,7 +28,9 @@ scmVersion {
     hooks {
         pre 'fileUpdate',
                 [file: 'docs/index.md', pattern: { v, c -> /avro-cli-$v/ }, replacement: { v, c -> "avro-cli-$v" }]
-        pre 'commit'
+        pre 'commit',
+                { v, p -> "release version: $v" }
+        post 'push'
     }
 }
 
