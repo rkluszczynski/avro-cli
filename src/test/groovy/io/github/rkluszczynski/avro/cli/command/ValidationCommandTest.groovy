@@ -18,8 +18,8 @@ class ValidationCommandTest extends Specification {
         when:
         commandService.executeCommand('validate',
                 '--compatibility', compatibilityStrategy,
-                '--schemaFile', prepareSchemaValidationPath(nextSchemaFilename),
-                '--previousSchemaFile', prepareSchemaValidationPath(previousSchemaFilename)
+                '--schema', prepareSchemaValidationPath(nextSchemaFilename),
+                '--previousSchema', prepareSchemaValidationPath(previousSchemaFilename)
         )
 
         then:
@@ -35,8 +35,8 @@ class ValidationCommandTest extends Specification {
     def 'should fail when native validation fails'() {
         when:
         commandService.executeCommand('validate', '--compatibility', 'FORWARD',
-                '--schemaFile', prepareSchemaValidationPath('../schema-no-fields.avsc'),
-                '--previousSchemaFile', prepareSchemaValidationPath('schema3-int-field.json')
+                '--schema', prepareSchemaValidationPath('../schema-no-fields.avsc'),
+                '--previousSchema', prepareSchemaValidationPath('schema3-int-field.json')
         )
 
         then:
@@ -45,7 +45,7 @@ class ValidationCommandTest extends Specification {
 
     def 'should fail when no file found'() {
         when:
-        commandService.executeCommand('validate', '--schemaFile', 'not-existing-file.avsc')
+        commandService.executeCommand('validate', '--schema', 'not-existing-file.avsc')
 
         then:
         trimmedOutput().startsWith('FAILED [java.io.FileNotFoundException] ')

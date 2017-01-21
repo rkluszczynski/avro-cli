@@ -24,7 +24,7 @@ class ValidationParameters extends CliCommandParameters {
     private CompatibilityStrategy compatibilityStrategy = FULL;
 
     @Parameter(
-            names = {"--schemaFile", "-s"},
+            names = {"--schema", "-s"},
             converter = SchemaSourceConverter.class,
             description = "Source of schema to read.",
             required = true
@@ -32,11 +32,11 @@ class ValidationParameters extends CliCommandParameters {
     private Schema schema;
 
     @Parameter(
-            names = {"--previousSchemaFile", "-p"},
+            names = {"--previousSchema", "-p"},
             converter = SchemaSourceConverter.class,
             description = "Sources of previous schemas in order of appearance in command line."
     )
-    private List<Schema> previousSchemaFiles = Lists.newArrayList();
+    private List<Schema> previousSchemas = Lists.newArrayList();
 
     @Parameter(
             names = {"--latest", "-l"},
@@ -52,8 +52,8 @@ class ValidationParameters extends CliCommandParameters {
         return schema;
     }
 
-    public List<Schema> getPreviousSchemaFiles() {
-        return previousSchemaFiles;
+    public List<Schema> getPreviousSchemas() {
+        return previousSchemas;
     }
 
     public boolean isOnlyLatestValidator() {

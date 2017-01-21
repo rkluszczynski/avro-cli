@@ -1,15 +1,20 @@
 # Quickstart
 
-To see usage, you need to have Java 8 installed. Then just download latest release version 
-[here](https://github.com/rkluszczynski/avro-cli/releases/download/avro-cli-0.2.1/avro-cli-0.2.1.jar).
+To see usage, you need to have Java 8 installed. Next, download latest release version from 
+[here](https://github.com/rkluszczynski/avro-cli/releases/download/avro-cli-0.2.1/avro-cli-0.2.1.jar)
+or using command below.
 
-Next, just type:
+```bash
+curl -L -O https://github.com/rkluszczynski/avro-cli/releases/download/avro-cli-0.2.1/avro-cli-0.2.1.jar
+```
+
+Finally, just type:
 
 ```bash
 java -jar avro-cli-0.2.1.jar 
 ```
 
-for help.
+to print help.
 
 # Commands
 
@@ -24,7 +29,7 @@ Usage: convert [options]
       Source file with message.
     --outputFile, -o
       Target file of converted message.
-  * --schemaFile, -s
+  * --schema, -s
       Source of schema to read.
     --toAvro, -a
       Convert from JSON to Avro.
@@ -46,20 +51,33 @@ Usage: validate [options]
     --latest, -l
       Use only latest validator.
       Default: false
-    --previousSchemaFile, -p
+    --previousSchema, -p
       Sources of previous schemas in order of appearance in command line.
       Default: []
-  * --schemaFile, -s
+  * --schema, -s
       Source of schema to read.
 ```
 
 Example of usage:
 
 ```bash
-java -jar avro-cli-0.2.1.jar validate -c backward -f schema2-string-null-field.json -p schema1-string-field.json 
+java -jar avro-cli-0.2.1.jar validate -c backward -s schema2-string-null-field.json -p schema1-string-field.json 
 ```
 
 where files can bee seen [here](https://github.com/rkluszczynski/avro-cli/tree/master/src/test/resources/validation).
+
+As of version `0.2.1` one can use URL address as schema source. For testing just start simple HTTP server in 
+resources folder to serve schemas files.
+
+```bash
+( cd src/test/resources/ && python -m SimpleHTTPServer 8000 )
+```
+
+Finally, validate schema against empty history using command below.
+
+```bash
+java -jar build/libs/avro-cli-0.2.1.jar validate -s http://localhost:8000/schema-no-fields.avsc
+```
 
 # Credits
 

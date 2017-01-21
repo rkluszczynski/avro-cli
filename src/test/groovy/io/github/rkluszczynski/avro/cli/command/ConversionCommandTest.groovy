@@ -19,7 +19,7 @@ class ConversionCommandTest extends Specification {
 
         when:
         commandService.executeCommand('convert', '--toAvro',
-                '--schemaFile', prepareFilePath('schema-enum.avsc'),
+                '--schema', prepareFilePath('schema-enum.avsc'),
                 '--inputFile', prepareFilePath('message-priority.json'),
                 '--outputFile', tmpFile.canonicalPath
         )
@@ -35,7 +35,7 @@ class ConversionCommandTest extends Specification {
 
         when:
         commandService.executeCommand('convert', '--toJson',
-                '--schemaFile', prepareFilePath('schema-enum.avsc'),
+                '--schema', prepareFilePath('schema-enum.avsc'),
                 '--inputFile', prepareFilePath('message-priority.avro'),
                 '--outputFile', tmpFile.canonicalPath
         )
@@ -47,7 +47,7 @@ class ConversionCommandTest extends Specification {
 
     def 'should fails when no target format is indicated'() {
         when:
-        commandService.executeCommand('convert', '--schemaFile', prepareFilePath('schema-enum.avsc'))
+        commandService.executeCommand('convert', '--schema', prepareFilePath('schema-enum.avsc'))
 
         then:
         trimmedOutput() == 'FAILED [io.github.rkluszczynski.avro.cli.CommandException] Exactly one of target format should be indicated (Avro or JSON).'
