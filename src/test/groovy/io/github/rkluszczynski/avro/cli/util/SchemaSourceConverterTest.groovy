@@ -15,14 +15,13 @@ class SchemaSourceConverterTest extends Specification {
 
     def 'should convert file path to schema'() {
         expect:
-        checkConvertedSchema(
-                new SchemaSourceConverter().convert('src/test/resources/schema-no-fields.avsc')
-        )
+        checkConvertedSchema(new SchemaSourceConverter()
+                .convert('src/test/resources/schema-no-fields.avsc'))
     }
 
     def 'should convert url content to schema'() {
         setup:
-        wireMockServer = new WireMockServer(9876)
+        wireMockServer = new WireMockServer()
         wireMockServer.start()
 
         wireMockServer.stubFor(get(urlEqualTo('/schema-no-fields'))
@@ -30,9 +29,8 @@ class SchemaSourceConverterTest extends Specification {
                 .withBody(new File('src/test/resources/schema-no-fields.avsc').text)))
 
         expect:
-        checkConvertedSchema(
-                new SchemaSourceConverter().convert('src/test/resources/schema-no-fields.avsc')
-        )
+        checkConvertedSchema(new SchemaSourceConverter()
+                .convert("http://localhost:${wireMockServer.port()}/schema-no-fields"))
 
         cleanup:
         wireMockServer.stop()
