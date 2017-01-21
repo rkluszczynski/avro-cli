@@ -1,12 +1,12 @@
 # Quickstart
 
 To see usage, you need to have Java 8 installed. Then just download latest release version 
-[here](https://github.com/rkluszczynski/avro-cli/releases/download/avro-cli-0.2.0/avro-cli-0.2.0.jar).
+[here](https://github.com/rkluszczynski/avro-cli/releases/download/avro-cli-0.2.1/avro-cli-0.2.1.jar).
 
 Next, just type:
 
 ```bash
-java -jar avro-cli-0.2.0.jar 
+java -jar avro-cli-0.2.1.jar 
 ```
 
 for help.
@@ -56,7 +56,7 @@ Usage: validate [options]
 Example of usage:
 
 ```bash
-java -jar avro-cli-0.2.0.jar validate -c backward -f schema2-string-null-field.json -p schema1-string-field.json 
+java -jar avro-cli-0.2.1.jar validate -c backward -f schema2-string-null-field.json -p schema1-string-field.json 
 ```
 
 where files can bee seen [here](https://github.com/rkluszczynski/avro-cli/tree/master/src/test/resources/validation).
