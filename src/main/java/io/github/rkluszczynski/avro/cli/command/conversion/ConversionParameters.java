@@ -11,7 +11,7 @@ import org.apache.avro.Schema;
 )
 class ConversionParameters extends CliCommandParameters {
     @Parameter(
-            names = {"--schemaFile", "-s"},
+            names = {"--schema", "-s"},
             converter = SchemaSourceConverter.class,
             description = "Source of schema to read.",
             required = true

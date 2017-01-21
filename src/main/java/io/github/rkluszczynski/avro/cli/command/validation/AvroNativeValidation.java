@@ -23,7 +23,7 @@ public class AvroNativeValidation implements CliCommand {
         try {
             schemaValidator.validate(
                     validationParameters.getSchema(),
-                    validationParameters.getPreviousSchemaFiles()
+                    validationParameters.getPreviousSchemas()
             );
         } catch (SchemaValidationException ex) {
             throw new CommandException("Could not validate schema.", ex);
