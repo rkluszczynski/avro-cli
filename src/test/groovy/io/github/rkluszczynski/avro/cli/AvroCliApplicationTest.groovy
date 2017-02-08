@@ -1,7 +1,6 @@
 package io.github.rkluszczynski.avro.cli
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.ApplicationContext
 import org.springframework.test.context.ContextConfiguration
@@ -15,7 +14,7 @@ class AvroCliApplicationTest extends BaseTestSpecification {
     @Autowired
     ApplicationContext context
     @Autowired
-    CommandLineRunner commandLineRunner
+    AvroCliApplication application
 
     def 'should boot up without errors'() {
         expect:
@@ -24,7 +23,7 @@ class AvroCliApplicationTest extends BaseTestSpecification {
 
     def 'should show exception when verbose main parameter exists'() {
         when:
-        commandLineRunner.run('-v', 'validate')
+        application.run('-v', 'validate')
 
         then:
         trimmedOutput().startsWith('FAILED [com.beust.jcommander.ParameterException] ')
@@ -34,7 +33,7 @@ class AvroCliApplicationTest extends BaseTestSpecification {
     @Unroll
     'should show help for command: #command'() {
         when:
-        commandLineRunner.run(command, '-h')
+        application.run(command, '-h')
 
         then:
         trimmedOutput().contains('\nUsage: ' + command + ' [options]\n  Options:\n')
