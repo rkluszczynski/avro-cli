@@ -23,12 +23,18 @@ to print help.
 Note, that this conversion is without schema included in Avro files.
 
 ```
+Avro <-> JSON conversion (without schema included).
 Usage: convert [options]
   Options:
     --inputFile, -i
       Source file with message.
+      Default: -
     --outputFile, -o
       Target file of converted message.
+      Default: -
+    --rawAvroConversion, -r
+      Using raw Avro conversion.
+      Default: false
   * --schema, -s
       Source of schema to read.
     --toAvro, -a
@@ -38,6 +44,15 @@ Usage: convert [options]
       Convert from Avro to JSON.
       Default: false
 ```
+
+Example of usage printing JSON from Avro message to standard output:
+
+```bash
+java -jar avro-cli-0.2.2.jar convert -j -s schema-friendly-union.avsc -i message-friendly-union.avro 
+
+```
+
+where files are [here](https://github.com/rkluszczynski/avro-cli/tree/master/src/test/resources/conversion).
 
 ### validate: Native Avro validation
 
@@ -65,6 +80,9 @@ java -jar avro-cli-0.2.2.jar validate -c backward -s schema2-string-null-field.j
 ```
 
 where files can bee seen [here](https://github.com/rkluszczynski/avro-cli/tree/master/src/test/resources/validation).
+
+
+# Schema sources
 
 As of version `0.2.1` one can use URL address as schema source. For testing just start simple HTTP server in 
 resources folder to serve schemas files.
