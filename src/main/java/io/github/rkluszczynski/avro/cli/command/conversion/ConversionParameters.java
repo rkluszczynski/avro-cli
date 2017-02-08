@@ -34,13 +34,19 @@ class ConversionParameters extends CliCommandParameters {
             names = {"--inputFile", "-i"},
             description = "Source file with message."
     )
-    private String inputFile;
+    private String inputFile = "-";
 
     @Parameter(
             names = {"--outputFile", "-o"},
             description = "Target file of converted message."
     )
-    private String outputFile;
+    private String outputFile = "-";
+
+    @Parameter(
+            names = {"--rawAvroConversion", "-r"},
+            description = "Using raw Avro conversion."
+    )
+    private boolean rawAvroConversion = false;
 
     public Schema getSchema() {
         return schema;
@@ -60,5 +66,9 @@ class ConversionParameters extends CliCommandParameters {
 
     public String getOutputFile() {
         return outputFile;
+    }
+
+    public boolean isRawAvroConversion() {
+        return rawAvroConversion;
     }
 }

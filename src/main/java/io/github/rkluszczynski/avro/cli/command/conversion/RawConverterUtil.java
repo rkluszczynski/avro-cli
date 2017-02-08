@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-final class ConverterUtil {
+final class RawConverterUtil {
 
     static void convertAvroToJson(InputStream inputStream, OutputStream outputStream, Schema schema)
             throws IOException {
@@ -57,6 +57,6 @@ final class ConverterUtil {
         outputStream.flush();
     }
 
-    private ConverterUtil() {
+    private RawConverterUtil() {
     }
 }
