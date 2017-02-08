@@ -4,7 +4,7 @@ plugins {
 
     id 'checkstyle'
     id 'jacoco'
-    id 'com.github.kt3k.coveralls' version '2.7.1'
+    id 'com.github.kt3k.coveralls' version '2.8.1'
 
     id 'org.springframework.boot' version '1.5.1.RELEASE'
     id 'pl.allegro.tech.build.axion-release' version '1.5.0'
@@ -30,7 +30,7 @@ targetCompatibility = 1.8
 
 def versions = [
         avro      : '1.8.1',
-        spock     : '1.0-groovy-2.4',
+        spock     : '1.1-groovy-2.4-rc-3',
 
         checkstyle: '6.3',
         gradle    : '3.3'
@@ -42,7 +42,7 @@ dependencies {
             'com.beust:jcommander:1.58',
             'tech.allegro.schema.json2avro:converter:0.2.5'
 
-    testCompile 'com.github.tomakehurst:wiremock:2.5.0',
+    testCompile 'com.github.tomakehurst:wiremock:2.5.1',
             'cglib:cglib-nodep:3.2.4',
             'org.objenesis:objenesis:2.5.1',
             "org.spockframework:spock-core:${versions.spock}",

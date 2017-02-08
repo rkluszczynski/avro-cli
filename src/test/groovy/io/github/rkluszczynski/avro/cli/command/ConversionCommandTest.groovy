@@ -1,17 +1,12 @@
 package io.github.rkluszczynski.avro.cli.command
 
+import io.github.rkluszczynski.avro.cli.BaseTestSpecification
 import io.github.rkluszczynski.avro.cli.CliCommandService
 import io.github.rkluszczynski.avro.cli.command.conversion.AvroConversion
 import io.github.rkluszczynski.avro.cli.command.conversion.ConversionService
-import org.junit.Rule
-import org.springframework.boot.test.rule.OutputCapture
-import spock.lang.Specification
 
-class ConversionCommandTest extends Specification {
+class ConversionCommandTest extends BaseTestSpecification {
     private commandService = new CliCommandService([new AvroConversion(new ConversionService())])
-
-    @Rule
-    OutputCapture capture = new OutputCapture()
 
     def 'should pass friendly conversion from json to avro'() {
         given:
@@ -83,10 +78,6 @@ class ConversionCommandTest extends Specification {
 
         then:
         trimmedOutput() == 'FAILED [io.github.rkluszczynski.avro.cli.CommandException] Exactly one of target format should be indicated (Avro or JSON).'
-    }
-
-    private trimmedOutput() {
-        capture.toString().trim()
     }
 
     private prepareFilePath(filename) {
