@@ -32,13 +32,15 @@ public class AvroConversion implements CliCommand {
                 conversionService.convertJsonToAvro(
                         conversionParameters.getInputFile(),
                         conversionParameters.getOutputFile(),
-                        conversionParameters.getSchema()
+                        conversionParameters.getSchema(),
+                        conversionParameters.isRawAvroConversion()
                 );
             } else if (conversionParameters.isToJson()) {
                 conversionService.convertAvroToJson(
                         conversionParameters.getInputFile(),
                         conversionParameters.getOutputFile(),
-                        conversionParameters.getSchema()
+                        conversionParameters.getSchema(),
+                        conversionParameters.isRawAvroConversion()
                 );
             } else {
                 throw new IllegalStateException("This should never happens!");

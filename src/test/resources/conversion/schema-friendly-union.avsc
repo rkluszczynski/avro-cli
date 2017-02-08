@@ -1,0 +1,14 @@
+{
+  "type": "record",
+  "name": "AuthorRecord",
+  "namespace": "io.github.rkluszczynski.avro.cli",
+  "fields": [
+    {
+      "name": "author",
+      "type": [
+        "null",
+        "string"
+      ]
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 package io.github.rkluszczynski.avro.cli;
 
+import avro.shaded.com.google.common.collect.Sets;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import io.github.rkluszczynski.avro.cli.command.CliCommand;
@@ -8,6 +9,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -36,7 +39,7 @@ public class CliCommandService {
      */
     public void executeCommand(String... args) {
         try {
-            commander.parse(args);
+            commander.parse(stripSpringBootArguments(args));
 
             if (cliMainParameters.isHelp() || args.length == 0) {
                 commander.usage();
@@ -57,6 +60,16 @@ public class CliCommandService {
         }
     }
 
+    private String[] stripSpringBootArguments(String[] args) {
+        final HashSet<String> excludeArgs = Sets.newHashSet("--trace", "--debug", "--info", "--warn", "--error");
+
+        final List<String> filteredArgs = Arrays.stream(args)
+                .filter(s -> !excludeArgs.contains(s))
+                .collect(Collectors.toList());
+
+        return filteredArgs.toArray(new String[filteredArgs.size()]);
+    }
+
     private void handleCommandException(RuntimeException ex) {
         String stderrMessage = String.format("FAILED [%s] %s",
                 isNull(ex.getCause()) ? ex.getClass().getCanonicalName() : ex.getCause().getClass().getCanonicalName(),
@@ -67,11 +80,17 @@ public class CliCommandService {
         if (log.isDebugEnabled()) {
             log.error(ex.getMessage(), ex);
         }
+        if (cliMainParameters.isVerbose()) {
+            ex.printStackTrace(System.err);
+        }
     }
 
     private JCommander createCommander(List<CliCommand> cliCommands, CliMainParameters cliMainParameters) {
         JCommander commander = new JCommander(cliMainParameters);
         commander.setProgramName(PROGRAM_NAME);
+        commander.setCaseSensitiveOptions(true);
+        commander.setAllowAbbreviatedOptions(true);
+        commander.setExpandAtSign(true);
         cliCommands.stream()
                 .forEach(cliCommand -> commander.addCommand(cliCommand.getCommandName(), cliCommand.getParameters()));
         return commander;

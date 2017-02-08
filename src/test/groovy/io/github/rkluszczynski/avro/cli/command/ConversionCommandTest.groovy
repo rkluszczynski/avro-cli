@@ -13,41 +13,73 @@ class ConversionCommandTest extends Specification {
     @Rule
     OutputCapture capture = new OutputCapture()
 
-    def 'should pass conversion from json to avro'() {
+    def 'should pass friendly conversion from json to avro'() {
         given:
         def tmpFile = File.createTempFile('message', '.avro')
 
         when:
         commandService.executeCommand('convert', '--toAvro',
-                '--schema', prepareFilePath('schema-enum.avsc'),
-                '--inputFile', prepareFilePath('message-priority.json'),
+                '--schema', prepareFilePath('schema-friendly-union.avsc'),
+                '--inputFile', prepareFilePath('message-friendly-union.json'),
                 '--outputFile', tmpFile.canonicalPath
         )
 
         then:
         trimmedOutput() == 'DONE'
-        compareFiles(prepareFilePath('message-priority.avro'), tmpFile.canonicalPath)
+        compareFiles(prepareFilePath('message-friendly-union.avro'), tmpFile.canonicalPath)
     }
 
-    def 'should pass conversion from avro to json'() {
+    def 'should pass friendly conversion from avro to json'() {
         given:
         def tmpFile = File.createTempFile('message', '.json')
 
         when:
         commandService.executeCommand('convert', '--toJson',
-                '--schema', prepareFilePath('schema-enum.avsc'),
-                '--inputFile', prepareFilePath('message-priority.avro'),
+                '--schema', prepareFilePath('schema-friendly-union.avsc'),
+                '--inputFile', prepareFilePath('message-friendly-union.avro'),
                 '--outputFile', tmpFile.canonicalPath
         )
 
         then:
         trimmedOutput() == 'DONE'
-        compareFiles(prepareFilePath('message-priority.json'), tmpFile.canonicalPath)
+        compareFiles(prepareFilePath('message-friendly-union.json'), tmpFile.canonicalPath)
+    }
+
+    def 'should pass raw conversion from json to avro'() {
+        given:
+        def tmpFile = File.createTempFile('message', '.avro')
+
+        when:
+        commandService.executeCommand('convert', '--toAvro', '--rawAvroConversion',
+                '--schema', prepareFilePath('schema-raw-enum.avsc'),
+                '--inputFile', prepareFilePath('message-raw-enum.json'),
+                '--outputFile', tmpFile.canonicalPath
+        )
+
+        then:
+        trimmedOutput() == 'DONE'
+        compareFiles(prepareFilePath('message-raw-enum.avro'), tmpFile.canonicalPath)
+    }
+
+    def 'should pass raw conversion from avro to json'() {
+        given:
+        def tmpFile = File.createTempFile('message', '.json')
+
+        when:
+        commandService.executeCommand('convert', '--toJson', '--rawAvroConversion',
+                '--schema', prepareFilePath('schema-raw-enum.avsc'),
+                '--inputFile', prepareFilePath('message-raw-enum.avro'),
+                '--outputFile', tmpFile.canonicalPath
+        )
+
+        then:
+        trimmedOutput() == 'DONE'
+        compareFiles(prepareFilePath('message-raw-enum.json'), tmpFile.canonicalPath)
     }
 
     def 'should fails when no target format is indicated'() {
         when:
-        commandService.executeCommand('convert', '--schema', prepareFilePath('schema-enum.avsc'))
+        commandService.executeCommand('convert', '--schema', prepareFilePath('schema-raw-enum.avsc'))
 
         then:
         trimmedOutput() == 'FAILED [io.github.rkluszczynski.avro.cli.CommandException] Exactly one of target format should be indicated (Avro or JSON).'
