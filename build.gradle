@@ -45,6 +45,7 @@ dependencies {
     testCompile 'com.github.tomakehurst:wiremock:2.5.1',
             'cglib:cglib-nodep:3.2.4',
             'org.objenesis:objenesis:2.5.1',
+            "org.spockframework:spock-core:${versions.spock}",
             "org.spockframework:spock-spring:${versions.spock}",
             'org.springframework.boot:spring-boot-starter-test'
 }
