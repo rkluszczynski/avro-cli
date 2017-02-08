@@ -13,8 +13,6 @@ import static java.util.Objects.nonNull
 class AvroCliApplicationTest extends BaseTestSpecification {
     @Autowired
     ApplicationContext context
-    @Autowired
-    AvroCliApplication application
 
     def 'should boot up without errors'() {
         expect:
@@ -23,7 +21,7 @@ class AvroCliApplicationTest extends BaseTestSpecification {
 
     def 'should show exception when verbose main parameter exists'() {
         when:
-        application.run('-v', 'validate')
+        AvroCliApplication.main('-v', 'validate')
 
         then:
         trimmedOutput().startsWith('FAILED [com.beust.jcommander.ParameterException] ')
@@ -33,7 +31,7 @@ class AvroCliApplicationTest extends BaseTestSpecification {
     @Unroll
     'should show help for command: #command'() {
         when:
-        application.run(command, '-h')
+        AvroCliApplication.main(command, '-h')
 
         then:
         trimmedOutput().contains('\nUsage: ' + command + ' [options]\n  Options:\n')
