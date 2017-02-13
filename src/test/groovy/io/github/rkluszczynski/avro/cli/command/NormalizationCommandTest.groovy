@@ -29,6 +29,21 @@ class NormalizationCommandTest extends BaseTestSpecification {
         compareFilesContent(prepareSchemaPath('schema-normalized.avsc'), tmpFile.canonicalPath)
     }
 
+    def 'should fail when wrong output file path is passed'() {
+        given:
+        def wrongOutputFile = File.createTempDir()
+
+        when:
+        commandService.executeCommand('normalize',
+                '--schema', prepareSchemaPath('schema-fat.avsc'),
+                '--outputFile', wrongOutputFile.canonicalPath
+        )
+
+        then:
+        trimmedOutput().startsWith('FAILED [java.nio.file.FileSystemException] ')
+        trimmedOutput().endsWith(': Is a directory')
+    }
+
     private prepareSchemaPath(schemaFilename) {
         "src/test/resources/normalization/${schemaFilename}"
     }
