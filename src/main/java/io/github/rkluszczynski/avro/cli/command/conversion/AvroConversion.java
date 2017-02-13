@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+import static io.github.rkluszczynski.avro.cli.command.CommandNames.CONVERT;
+
 @Component
 public class AvroConversion implements CliCommand {
     private final ConversionParameters conversionParameters = new ConversionParameters();
@@ -53,7 +55,7 @@ public class AvroConversion implements CliCommand {
 
     @Override
     public String getCommandName() {
-        return "convert";
+        return CONVERT.getCliCommand();
     }
 
     @Override

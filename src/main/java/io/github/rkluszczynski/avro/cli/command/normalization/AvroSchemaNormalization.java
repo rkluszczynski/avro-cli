@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import static io.github.rkluszczynski.avro.cli.command.CommandNames.NORMALIZE;
 import static org.apache.avro.SchemaNormalization.toParsingForm;
 
 @Component
@@ -37,7 +38,7 @@ public class AvroSchemaNormalization implements CliCommand {
 
     @Override
     public String getCommandName() {
-        return "normalize";
+        return NORMALIZE.getCliCommand();
     }
 
     @Override

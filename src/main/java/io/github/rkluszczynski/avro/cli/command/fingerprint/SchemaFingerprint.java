@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.NoSuchAlgorithmException;
 
+import static io.github.rkluszczynski.avro.cli.command.CommandNames.FINGERPRINT;
 import static org.apache.avro.SchemaNormalization.parsingFingerprint;
 import static org.apache.avro.SchemaNormalization.parsingFingerprint64;
 
@@ -40,7 +41,7 @@ public class SchemaFingerprint implements CliCommand {
 
     @Override
     public String getCommandName() {
-        return "fingerprint";
+        return FINGERPRINT.getCliCommand();
     }
 
     @Override
