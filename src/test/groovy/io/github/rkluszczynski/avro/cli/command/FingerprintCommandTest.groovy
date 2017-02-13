@@ -28,12 +28,20 @@ class FingerprintCommandTest extends BaseTestSpecification {
 
     def 'should calculate Rabin fingerprint'() {
         when:
-        commandService.executeCommand('fingerprint',
+        commandService.executeCommand('fingerprint', '--schema', prepareSchemaPath('schema-no-fields.avsc'))
+
+        then:
+        trimmedOutput() == 'a289a9ffe914b78d'
+    }
+
+    def 'should fail for no existing algorihtm'() {
+        when:
+        commandService.executeCommand('fingerprint', '-a', 'NOT-EXISTING-ALGORITHM',
                 '--schema', prepareSchemaPath('schema-no-fields.avsc')
         )
 
         then:
-        trimmedOutput() == 'a289a9ffe914b78d'
+        trimmedOutput() == 'FAILED [java.security.NoSuchAlgorithmException] NOT-EXISTING-ALGORITHM MessageDigest not available'
     }
 
     private prepareSchemaPath(schemaFilename) {
