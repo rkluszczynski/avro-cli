@@ -7,7 +7,7 @@ import io.github.rkluszczynski.avro.cli.util.SchemaSourceConverter;
 import org.apache.avro.Schema;
 
 @Parameters(
-        commandDescription = "Prints fingerprint of schema canonical form."
+        commandDescription = "Normalize schema to canonical parsing form."
 )
 class NormalizationParameters extends CliCommandParameters {
     @Parameter(
