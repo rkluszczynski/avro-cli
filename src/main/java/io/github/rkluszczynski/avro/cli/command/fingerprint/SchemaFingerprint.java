@@ -22,7 +22,7 @@ public class SchemaFingerprint implements CliCommand {
         final String algorithm = fingerprintParameters.getAlgorithm();
 
         if (algorithm.isEmpty()) {
-            return String.format("%X", parsingFingerprint64(schema));
+            return String.format("%x", parsingFingerprint64(schema));
         }
 
         try {
@@ -30,34 +30,13 @@ public class SchemaFingerprint implements CliCommand {
 
             String fingerprintString = "";
             for (byte b : bytes) {
-                fingerprintString += String.format("%X", b);
+                fingerprintString += String.format("%x", b);
             }
             return fingerprintString;
         } catch (NoSuchAlgorithmException e) {
             throw new CommandException("Wrong algorithm parameter!", e);
         }
     }
-
-//    public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
-//        final Schema schema = new Schema.Parser().parse(new File("src/test/resources/schema-no-fields.avsc"));
-//
-//        System.out.println(SchemaNormalization.toParsingForm(schema));
-//
-//        System.out.println(String.format("%x", parsingFingerprint64(schema)));
-//
-//        print("CRC-64-AVRO", schema);
-//        print("MD5", schema);
-//        print("SHA-256", schema);
-//    }
-//
-//    private static void print(String alg, Schema schema) throws NoSuchAlgorithmException {
-//        final byte[] bytes = parsingFingerprint(alg, schema);
-//        System.out.println("=> " + bytes.length);
-//        for (byte b : bytes) {
-//            System.out.print(String.format("%x", b));
-//        }
-//        System.out.println();
-//    }
 
     @Override
     public String getCommandName() {
