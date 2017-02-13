@@ -21,7 +21,7 @@ class ConversionCommandTest extends BaseTestSpecification {
 
         then:
         trimmedOutput() == 'DONE'
-        compareFiles(prepareFilePath('message-friendly-union.avro'), tmpFile.canonicalPath)
+        compareFilesContent(prepareFilePath('message-friendly-union.avro'), tmpFile.canonicalPath)
     }
 
     def 'should pass friendly conversion from avro to json'() {
@@ -37,7 +37,7 @@ class ConversionCommandTest extends BaseTestSpecification {
 
         then:
         trimmedOutput() == 'DONE'
-        compareFiles(prepareFilePath('message-friendly-union.json'), tmpFile.canonicalPath)
+        compareFilesContent(prepareFilePath('message-friendly-union.json'), tmpFile.canonicalPath)
     }
 
     def 'should pass raw conversion from json to avro'() {
@@ -53,7 +53,7 @@ class ConversionCommandTest extends BaseTestSpecification {
 
         then:
         trimmedOutput() == 'DONE'
-        compareFiles(prepareFilePath('message-raw-enum.avro'), tmpFile.canonicalPath)
+        compareFilesContent(prepareFilePath('message-raw-enum.avro'), tmpFile.canonicalPath)
     }
 
     def 'should pass raw conversion from avro to json'() {
@@ -69,7 +69,7 @@ class ConversionCommandTest extends BaseTestSpecification {
 
         then:
         trimmedOutput() == 'DONE'
-        compareFiles(prepareFilePath('message-raw-enum.json'), tmpFile.canonicalPath)
+        compareFilesContent(prepareFilePath('message-raw-enum.json'), tmpFile.canonicalPath)
     }
 
     def 'should fails when no target format is indicated'() {
@@ -82,12 +82,5 @@ class ConversionCommandTest extends BaseTestSpecification {
 
     private prepareFilePath(filename) {
         "src/test/resources/conversion/${filename}"
-    }
-
-    private compareFiles(filePath1, filePath2) {
-        def contentText1 = new File(filePath1).text
-        def contentText2 = new File(filePath2).text
-
-        contentText1 == contentText2
     }
 }
