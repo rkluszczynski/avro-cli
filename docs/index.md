@@ -54,6 +54,20 @@ java -jar avro-cli-0.2.3.jar convert -j -s schema-friendly-union.avsc -i message
 
 where files are [here](https://github.com/rkluszczynski/avro-cli/tree/master/src/test/resources/conversion).
 
+### fingerprint: Prints fingerprint of schema canonical form
+
+```
+Usage: fingerprint [options]
+  Options:
+    --algorithm, -a
+      Algorithm code for fingerprint (i.e. CRC-64-AVRO, MD5, SHA-256).
+Default 
+      is Rabin fingerprint.
+      Default: <empty string>
+  * --schema, -s
+      Source of schema to read.
+```
+
 ### validate: Native Avro validation
 
 ```
