@@ -66,6 +66,18 @@ Usage: fingerprint [options]
       Source of schema to read.
 ```
 
+### normalize: Normalize schema to canonical parsing form
+
+```
+Usage: normalize [options]
+  Options:
+    --outputFile, -o
+      Target file of normalized schema. Default is standard output.
+      Default: -
+  * --schema, -s
+      Source of schema to read.
+```
+
 ### validate: Native Avro validation
 
 ```
