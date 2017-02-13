@@ -21,7 +21,7 @@ public class SchemaFingerprint implements CliCommand {
         final Schema schema = fingerprintParameters.getSchema();
         final String algorithm = fingerprintParameters.getAlgorithm();
 
-        if (algorithm.isEmpty()) {
+        if (algorithm == null || algorithm.isEmpty()) {
             return String.format("%x", parsingFingerprint64(schema));
         }
 

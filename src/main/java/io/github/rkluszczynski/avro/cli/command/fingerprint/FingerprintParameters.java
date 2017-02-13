@@ -20,10 +20,10 @@ class FingerprintParameters extends CliCommandParameters {
 
     @Parameter(
             names = {"--algorithm", "-a"},
-            description = "Algorithm code for fingerprint (i.e. CRC-64-AVRO, MD5, SHA-256).\n"
+            description = "Algorithm code for fingerprint (i.e. CRC-64-AVRO, MD5, SHA-256). "
                     + "Default is Rabin fingerprint."
     )
-    private String algorithm = "";
+    private String algorithm = null;
 
     public Schema getSchema() {
         return schema;
