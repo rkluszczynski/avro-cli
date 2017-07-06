@@ -28,10 +28,10 @@ class FingerprintCommandTest extends BaseTestSpecification {
 
     def 'should calculate Rabin fingerprint'() {
         when:
-        commandService.executeCommand('fingerprint', '--schema', prepareSchemaPath('schema-no-fields.avsc'))
+        commandService.executeCommand('fingerprint', '--schema', prepareSchemaPath('schema-for-rabin.avsc'))
 
         then:
-        trimmedOutput() == 'a289a9ffe914b78d'
+        trimmedOutput() == '0918bd124db26deb'
     }
 
     def 'should fail for no existing algorihtm'() {

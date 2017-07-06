@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.security.NoSuchAlgorithmException;
 
 import static io.github.rkluszczynski.avro.cli.command.CommandNames.FINGERPRINT;
+import static java.lang.Long.toHexString;
 import static org.apache.avro.SchemaNormalization.parsingFingerprint;
 import static org.apache.avro.SchemaNormalization.parsingFingerprint64;
 
@@ -23,7 +24,8 @@ public class SchemaFingerprint implements CliCommand {
         final String algorithm = fingerprintParameters.getAlgorithm();
 
         if (algorithm == null || algorithm.isEmpty()) {
-            return String.format("%x", parsingFingerprint64(schema));
+            return String.format(FINGERPRINT64_HEX_FORMAT, toHexString(parsingFingerprint64(schema)))
+                    .replace(" ", "0");
         }
 
         try {
@@ -48,4 +50,6 @@ public class SchemaFingerprint implements CliCommand {
     public CliCommandParameters getParameters() {
         return fingerprintParameters;
     }
+
+    private static final String FINGERPRINT64_HEX_FORMAT = "%" + String.valueOf(Long.SIZE >> 2) + "s";
 }
