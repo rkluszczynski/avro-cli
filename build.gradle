@@ -39,6 +39,8 @@ def versions = [
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter',
             "org.apache.avro:avro:${versions.avro}",
+            'org.apache.hadoop:hadoop-core:1.2.1',
+            'org.apache.parquet:parquet-avro:1.9.0',
             'com.beust:jcommander:1.58',
             'tech.allegro.schema.json2avro:converter:0.2.5'
 
