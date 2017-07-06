@@ -51,5 +51,5 @@ public class SchemaFingerprint implements CliCommand {
         return fingerprintParameters;
     }
 
-    private static final String FINGERPRINT64_HEX_FORMAT = "%" + String.valueOf(Long.BYTES >> 3) + "s";
+    private static final String FINGERPRINT64_HEX_FORMAT = "%" + String.valueOf(Long.SIZE >> 2) + "s";
 }
