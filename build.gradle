@@ -14,9 +14,9 @@ scmVersion {
     tag.prefix = project.name
 
     hooks {
-        pre 'fileUpdate',
+        post 'fileUpdate',
                 [file: 'docs/index.md', pattern: { v, c -> /avro-cli-$v/ }, replacement: { v, c -> "avro-cli-$v" }]
-        pre 'commit',
+        post 'commit',
                 { v, p -> "release version: $v" }
         post 'push'
     }
