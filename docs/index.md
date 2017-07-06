@@ -1,17 +1,17 @@
 # Quickstart
 
 To see usage, you need to have Java 8 installed. Next, download latest release version from 
-[here](https://github.com/rkluszczynski/avro-cli/releases/download/avro-cli-0.2.5/avro-cli-0.2.5.jar)
+[here](https://github.com/rkluszczynski/avro-cli/releases/download/avro-cli-0.2.6/avro-cli-0.2.6.jar)
 or using command below.
 
 ```bash
-curl -L -O https://github.com/rkluszczynski/avro-cli/releases/download/avro-cli-0.2.5/avro-cli-0.2.5.jar
+curl -L -O https://github.com/rkluszczynski/avro-cli/releases/download/avro-cli-0.2.6/avro-cli-0.2.6.jar
 ```
 
 Finally, just type:
 
 ```bash
-java -jar avro-cli-0.2.5.jar 
+java -jar avro-cli-0.2.6.jar 
 ```
 
 to print help.
@@ -48,7 +48,7 @@ Usage: convert [options]
 Example of usage printing JSON from Avro message to standard output:
 
 ```bash
-java -jar avro-cli-0.2.5.jar convert -j -s schema-friendly-union.avsc -i message-friendly-union.avro 
+java -jar avro-cli-0.2.6.jar convert -j -s schema-friendly-union.avsc -i message-friendly-union.avro 
 
 ```
 
@@ -100,7 +100,7 @@ Usage: validate [options]
 Example of usage:
 
 ```bash
-java -jar avro-cli-0.2.5.jar validate -c backward -s schema2-string-null-field.json -p schema1-string-field.json 
+java -jar avro-cli-0.2.6.jar validate -c backward -s schema2-string-null-field.json -p schema1-string-field.json 
 ```
 
 where files can bee seen [here](https://github.com/rkluszczynski/avro-cli/tree/master/src/test/resources/validation).
@@ -118,7 +118,7 @@ resources folder to serve schemas files.
 Finally, validate schema against empty history using command below.
 
 ```bash
-java -jar avro-cli-0.2.5.jar validate -s http://localhost:8000/schema-no-fields.avsc
+java -jar avro-cli-0.2.6.jar validate -s http://localhost:8000/schema-no-fields.avsc
 ```
 
 # Credits
