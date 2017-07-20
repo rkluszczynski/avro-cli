@@ -1,17 +1,15 @@
 package io.github.rkluszczynski.avro.cli.util
 
 import com.github.tomakehurst.wiremock.WireMockServer
+import io.github.rkluszczynski.avro.cli.WiremockTrait
 import org.apache.avro.Schema
-import spock.lang.Shared
 import spock.lang.Specification
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import static com.github.tomakehurst.wiremock.client.WireMock.get
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 
-class SchemaSourceConverterTest extends Specification {
-    @Shared
-    WireMockServer wireMockServer
+class SchemaSourceConverterTest extends Specification implements WiremockTrait {
 
     def 'should convert file path to schema'() {
         expect:
@@ -21,7 +19,7 @@ class SchemaSourceConverterTest extends Specification {
 
     def 'should convert url content to schema'() {
         setup:
-        wireMockServer = new WireMockServer()
+        WireMockServer wireMockServer = createWiremockServer()
         wireMockServer.start()
 
         wireMockServer.stubFor(get(urlEqualTo('/schema-no-fields'))

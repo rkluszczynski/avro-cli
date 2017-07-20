@@ -23,6 +23,7 @@ public class KafkaConsumption implements CliCommand {
         final KafkaMessageConsumer messageConsumer = KafkaMessageConsumer.builder()
                 .withBootstrapServers(consumerParameters.getBootstrapServers())
                 .withTopics(topics.toArray(new String[topics.size()]))
+                .withMessageType(consumerParameters.getMessageType())
                 .withOffsetReset(consumerParameters.getOffsetReset())
                 .build();
 
@@ -43,7 +44,7 @@ public class KafkaConsumption implements CliCommand {
 
         final Long limit = consumerParameters.getLimit();
         if (isValidLimitProvided(limit)) {
-            forever.until(() -> messageConsumer.getTextMessageListener().getCount() >= limit);
+            forever.until(() -> messageConsumer.getMessageListener().getCount() >= limit);
             listenerContainer.stop();
         } else {
             forever.until(() -> !listenerContainer.isRunning());
