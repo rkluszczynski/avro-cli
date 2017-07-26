@@ -7,7 +7,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 import java.util.List;
 
-public class BatchAvroMessageListener extends ExtendedMessageListener<String, byte[]> {
+public class AvroMessageListener extends ExtendedMessageListener<String, byte[]> {
     public void onMessage(List<ConsumerRecord<String, byte[]>> data) {
         data.forEach(this::onMessage);
     }
@@ -19,5 +19,5 @@ public class BatchAvroMessageListener extends ExtendedMessageListener<String, by
         System.out.printf("%s%n%n", record.value());
     }
 
-    private Log log = LogFactory.getLog(BatchAvroMessageListener.class);
+    private Log log = LogFactory.getLog(AvroMessageListener.class);
 }

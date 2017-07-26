@@ -1,7 +1,7 @@
 package io.github.rkluszczynski.avro.cli.command.kafka;
 
-import io.github.rkluszczynski.avro.cli.command.kafka.avro.BatchAvroMessageListener;
-import io.github.rkluszczynski.avro.cli.command.kafka.text.BatchTextMessageListener;
+import io.github.rkluszczynski.avro.cli.command.kafka.avro.AvroMessageListener;
+import io.github.rkluszczynski.avro.cli.command.kafka.text.TextMessageListener;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -38,9 +38,9 @@ class KafkaMessageConsumer {
 
     private ExtendedMessageListener createMessageListener(MessageTypeParameter messageType) {
         if (AVRO.equals(messageType)) {
-            return new BatchAvroMessageListener();
+            return new AvroMessageListener();
         }
-        return new BatchTextMessageListener();
+        return new TextMessageListener();
     }
 
     public KafkaMessageListenerContainer<String, String> getListenerContainer() {

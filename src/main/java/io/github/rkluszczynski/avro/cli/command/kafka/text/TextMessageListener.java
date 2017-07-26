@@ -7,7 +7,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 import java.util.List;
 
-public class BatchTextMessageListener extends ExtendedMessageListener<String, String> {
+public class TextMessageListener extends ExtendedMessageListener<String, String> {
     public void onMessage(List<ConsumerRecord<String, String>> data) {
         data.forEach(this::onMessage);
     }
@@ -19,5 +19,5 @@ public class BatchTextMessageListener extends ExtendedMessageListener<String, St
         System.out.printf("%s%n%n", record.value());
     }
 
-    private Log log = LogFactory.getLog(BatchTextMessageListener.class);
+    private Log log = LogFactory.getLog(TextMessageListener.class);
 }

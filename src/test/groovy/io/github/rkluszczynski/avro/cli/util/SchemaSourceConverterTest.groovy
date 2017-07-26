@@ -35,7 +35,9 @@ class SchemaSourceConverterTest extends Specification implements WiremockTrait {
     }
 
     private checkConvertedSchema(schema) {
-        schema.type == Schema.Type.RECORD && schema.name == 'testRecord' &&
-                schema.namespace == 'io.github.rkluszczynski.avro.cli' && schema.fields == []
+        schema.type == Schema.Type.RECORD &&
+                schema.name == 'testRecord' &&
+                schema.namespace == 'io.github.rkluszczynski.avro.cli' &&
+                schema.fields == []
     }
 }
