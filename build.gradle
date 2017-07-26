@@ -31,7 +31,7 @@ def versions = [
         spock       : '1.1-groovy-2.4',
 
         checkstyle  : '6.3',
-        gradle      : '3.5'
+        gradle      : '4.0.1'
 ]
 
 dependencies {

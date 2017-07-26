@@ -77,9 +77,9 @@ public class CliCommandService {
         );
         System.err.println(stderrMessage);
 
-        if (log.isDebugEnabled()) {
-            log.error(ex.getMessage(), ex);
-        }
+//        if (log.isDebugEnabled()) {
+//            log.error(ex.getMessage(), ex);
+//        }
         if (cliMainParameters.isVerbose()) {
             ex.printStackTrace(System.err);
         }
