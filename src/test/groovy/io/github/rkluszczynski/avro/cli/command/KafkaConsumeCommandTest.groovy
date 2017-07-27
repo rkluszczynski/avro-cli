@@ -6,6 +6,7 @@ import io.github.rkluszczynski.avro.cli.EmbeddedKafkaInstance
 import io.github.rkluszczynski.avro.cli.EmbeddedKafkaTrait
 import io.github.rkluszczynski.avro.cli.command.kafka.KafkaConsumption
 import org.junit.ClassRule
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.util.concurrent.PollingConditions
 
@@ -34,6 +35,7 @@ class KafkaConsumeCommandTest extends BaseTestSpecification implements EmbeddedK
         trimmedOutput().endsWith('test message')
     }
 
+    @Ignore
     def 'should consumer ignore earlier messages when offset reset is set to latest'() {
         setup:
         def conditions = new PollingConditions(timeout: 5, delay: 0.2)
