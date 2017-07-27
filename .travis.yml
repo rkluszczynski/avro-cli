@@ -5,7 +5,7 @@ before_install:
   - chmod +x gradlew
 script:
   - env | sort
-  - ./gradlew check --info
+  - ./gradlew check
 after_success:
   - ./gradlew jacocoTestReport coveralls
 deploy:
