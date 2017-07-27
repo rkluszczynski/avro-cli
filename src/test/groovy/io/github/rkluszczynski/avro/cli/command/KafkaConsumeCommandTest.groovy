@@ -9,6 +9,7 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.test.rule.KafkaEmbedded
 import org.springframework.kafka.test.utils.KafkaTestUtils
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.util.concurrent.PollingConditions
 
@@ -49,7 +50,7 @@ class KafkaConsumeCommandTest extends BaseTestSpecification implements EmbeddedK
         trimmedOutput().endsWith('test message')
     }
 
-//    @Ignore
+    @Ignore
     def 'should consumer ignore earlier messages when offset reset is set to latest'() {
         setup:
         def conditions = new PollingConditions(timeout: 5, delay: 0.2)
