@@ -2,11 +2,13 @@ package io.github.rkluszczynski.avro.cli.command
 
 import io.github.rkluszczynski.avro.cli.BaseTestSpecification
 import io.github.rkluszczynski.avro.cli.CliCommandService
-import io.github.rkluszczynski.avro.cli.EmbeddedKafkaInstance
 import io.github.rkluszczynski.avro.cli.EmbeddedKafkaTrait
 import io.github.rkluszczynski.avro.cli.command.kafka.KafkaConsumption
 import org.junit.ClassRule
-import spock.lang.Ignore
+import org.springframework.kafka.core.DefaultKafkaProducerFactory
+import org.springframework.kafka.core.KafkaTemplate
+import org.springframework.kafka.test.rule.KafkaEmbedded
+import org.springframework.kafka.test.utils.KafkaTestUtils
 import spock.lang.Shared
 import spock.util.concurrent.PollingConditions
 
@@ -17,11 +19,15 @@ class KafkaConsumeCommandTest extends BaseTestSpecification implements EmbeddedK
 
     @ClassRule
     @Shared
-    EmbeddedKafkaInstance embeddedKafka = new EmbeddedKafkaInstance('testTopic0')
+//    EmbeddedKafkaInstance embeddedKafka = new EmbeddedKafkaInstance('testTopic0')
+    KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, 1, 'testTopic0')
 
     def 'should consume earliest message from topic'() {
         given:
-        embeddedKafka.send('testTopic0', 'test message')
+        def senderProperties = KafkaTestUtils.senderProps(embeddedKafka.brokersAsString)
+        def producerFactory = new DefaultKafkaProducerFactory<Integer, String>(senderProperties)
+
+        new KafkaTemplate<Integer, String>(producerFactory).send('testTopic0', 'test message')
 
         when:
         commandService.executeCommand('kafka-consume',
@@ -35,7 +41,7 @@ class KafkaConsumeCommandTest extends BaseTestSpecification implements EmbeddedK
         trimmedOutput().endsWith('test message')
     }
 
-    @Ignore
+//    @Ignore
     def 'should consumer ignore earlier messages when offset reset is set to latest'() {
         setup:
         def conditions = new PollingConditions(timeout: 5, delay: 0.2)
