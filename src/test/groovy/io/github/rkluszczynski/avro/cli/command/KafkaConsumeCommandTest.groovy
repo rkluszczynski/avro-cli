@@ -22,6 +22,14 @@ class KafkaConsumeCommandTest extends BaseTestSpecification implements EmbeddedK
 //    EmbeddedKafkaInstance embeddedKafka = new EmbeddedKafkaInstance('testTopic0')
     KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, 1, 'testTopic0')
 
+    def setup() {
+        capture.reset()
+    }
+
+    def cleanup() {
+        capture.flush()
+    }
+
     def 'should consume earliest message from topic'() {
         given:
         def senderProperties = KafkaTestUtils.senderProps(embeddedKafka.brokersAsString)
