@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.ApplicationContext
 import org.springframework.test.context.ContextConfiguration
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 import static java.util.Objects.nonNull
@@ -19,6 +20,7 @@ class AvroCliApplicationTest extends BaseTestSpecification {
         nonNull(context)
     }
 
+    @Ignore
     def 'should show exception when verbose main parameter exists'() {
         when:
         AvroCliApplication.main('-v', 'validate')

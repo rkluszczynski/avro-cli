@@ -80,9 +80,9 @@ public class CliCommandService {
 //        if (log.isDebugEnabled()) {
 //            log.error(ex.getMessage(), ex);
 //        }
-        if (cliMainParameters.isVerbose()) {
-            ex.printStackTrace(System.err);
-        }
+//        if (cliMainParameters.isVerbose()) {
+//            ex.printStackTrace(System.err);
+//        }
     }
 
     private JCommander createCommander(List<CliCommand> cliCommands, CliMainParameters cliMainParameters) {
