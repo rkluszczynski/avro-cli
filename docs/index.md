@@ -123,6 +123,7 @@ java -jar avro-cli-0.2.6.jar validate -s http://localhost:8000/schema-no-fields.
 
 # Credits
 
- * [Apache Avro™ 1.8.1 Specification](http://avro.apache.org/docs/1.8.1/spec.html)
- * [Spring boot](https://projects.spring.io/spring-boot)
+ * [Apache Avro™ Specification](http://avro.apache.org/docs/current/spec.html)
  * [JCommander](http://jcommander.org)
+ * [Spring Boot](https://projects.spring.io/spring-boot)
+ * [Spring for Apache Kafka](https://projects.spring.io/spring-kafka)

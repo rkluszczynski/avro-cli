@@ -16,8 +16,6 @@ scmVersion {
     hooks {
         pre 'fileUpdate',
                 [file: 'docs/index.md', pattern: { v, c -> /avro-cli-$v/ }, replacement: { v, c -> "avro-cli-$v" }]
-        pre 'commit',
-                { v, p -> "release version: $v" }
     }
 }
 
@@ -28,17 +26,21 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 def versions = [
-        avro      : '1.8.1',
-        spock     : '1.1-groovy-2.4-rc-3',
+        avro        : '1.8.2',
+        spring_kafka: '1.2.2.RELEASE',
+        spock       : '1.1-groovy-2.4',
 
-        checkstyle: '6.3',
-        gradle    : '4.0.1'
+        checkstyle  : '6.3',
+        gradle      : '4.0.1'
 ]
 
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter',
+            "org.springframework.kafka:spring-kafka:${versions.spring_kafka}",
             "org.apache.avro:avro:${versions.avro}",
             'com.beust:jcommander:1.72',
+            'com.squareup.okhttp3:okhttp:3.8.1',
+            'org.awaitility:awaitility:3.0.0',
             'tech.allegro.schema.json2avro:converter:0.2.5'
 
     testCompile 'com.github.tomakehurst:wiremock:2.6.0',
@@ -46,7 +48,8 @@ dependencies {
             'org.objenesis:objenesis:2.6',
             "org.spockframework:spock-core:${versions.spock}",
             "org.spockframework:spock-spring:${versions.spock}",
-            'org.springframework.boot:spring-boot-starter-test'
+            'org.springframework.boot:spring-boot-starter-test',
+            "org.springframework.kafka:spring-kafka-test:${versions.spring_kafka}"
 }
 
 repositories {
