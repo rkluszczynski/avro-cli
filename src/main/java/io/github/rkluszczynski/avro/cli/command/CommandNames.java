@@ -7,6 +7,9 @@ public enum CommandNames {
     NORMALIZE,
     VALIDATE;
 
+    /**
+     * @return Command name for application.
+     */
     public String getCliCommand() {
         return name()
                 .toLowerCase()

@@ -39,8 +39,6 @@ dependencies {
             "org.springframework.kafka:spring-kafka:${versions.spring_kafka}",
             "org.apache.avro:avro:${versions.avro}",
             'com.beust:jcommander:1.72',
-            'com.squareup.okhttp3:okhttp:3.8.1',
-            'org.awaitility:awaitility:3.0.0',
             'tech.allegro.schema.json2avro:converter:0.2.5'
 
     testCompile 'com.github.tomakehurst:wiremock:2.6.0',
