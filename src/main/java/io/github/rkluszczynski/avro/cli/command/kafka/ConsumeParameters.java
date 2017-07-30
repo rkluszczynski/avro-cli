@@ -74,13 +74,13 @@ class ConsumeParameters extends CliCommandParameters {
     }
 
     private static class MessageTypeParameterConverter extends EnumConverter<MessageTypeParameter> {
-        public MessageTypeParameterConverter(String optionName, Class<MessageTypeParameter> clazz) {
+        private MessageTypeParameterConverter(String optionName, Class<MessageTypeParameter> clazz) {
             super(optionName, clazz);
         }
     }
 
     private static class OffsetResetParameterConverter extends EnumConverter<OffsetResetParameter> {
-        public OffsetResetParameterConverter(String optionName, Class<OffsetResetParameter> clazz) {
+        private OffsetResetParameterConverter(String optionName, Class<OffsetResetParameter> clazz) {
             super(optionName, clazz);
         }
     }

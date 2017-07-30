@@ -5,14 +5,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
-import java.util.List;
-
 import static java.time.Instant.ofEpochMilli;
 
 public class TextMessageListener extends ExtendedMessageListener<String, String> {
-    public void onMessage(List<ConsumerRecord<String, String>> data) {
-        data.forEach(this::onMessage);
-    }
 
     @Override
     public void onMessage(ConsumerRecord<String, String> record) {

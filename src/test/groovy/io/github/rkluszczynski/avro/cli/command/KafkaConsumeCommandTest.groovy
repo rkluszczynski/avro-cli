@@ -17,7 +17,7 @@ class KafkaConsumeCommandTest extends BaseTestSpecification {
     @ClassRule
     @Shared
     KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, 1,
-            'testTopic0-1', 'testTopic0-2', 'testTopic0-3')
+            'testTopic', 'testTopic0-1', 'testTopic0-2', 'testTopic0-3')
 
     @Unroll
     def 'should consume earliest message from topic with duration string #durationParameter'() {
@@ -40,8 +40,20 @@ class KafkaConsumeCommandTest extends BaseTestSpecification {
 
         where:
         topicName      | durationParameter
-        'testTopic0-1' | 'PT3S'
-        'testTopic0-2' | 'T3S'
-        'testTopic0-3' | '3S'
+        'testTopic0-1' | 'PT2S'
+        'testTopic0-2' | 'T2S'
+        'testTopic0-3' | '2S'
+    }
+
+    def 'should fail when duration parameter is not parsable'() {
+        when:
+        commandService.executeCommand('kafka-consume',
+                '-b', embeddedKafka.brokersAsString,
+                '-t', 'testTopic',
+                '--duration', 'NOT-PARSABLE-DURATION-PARAMETER'
+        )
+
+        then:
+        trimmedOutput() == 'FAILED [java.time.format.DateTimeParseException] Text cannot be parsed to a Duration'
     }
 }

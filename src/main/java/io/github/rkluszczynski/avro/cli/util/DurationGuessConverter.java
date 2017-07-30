@@ -1,6 +1,7 @@
 package io.github.rkluszczynski.avro.cli.util;
 
 import com.beust.jcommander.IStringConverter;
+import io.github.rkluszczynski.avro.cli.CommandException;
 
 import java.time.Duration;
 import java.time.format.DateTimeParseException;
@@ -29,7 +30,7 @@ public class DurationGuessConverter implements IStringConverter<Duration> {
         try {
             return Duration.parse("PT" + value);
         } catch (DateTimeParseException ex) {
-            throw parseException;
+            throw new CommandException("Could not guess duration parameter!", parseException);
         }
     }
 

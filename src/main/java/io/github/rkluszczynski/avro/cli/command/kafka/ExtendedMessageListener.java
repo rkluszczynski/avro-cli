@@ -8,8 +8,4 @@ public abstract class ExtendedMessageListener<K, V> implements MessageListener<K
     protected long incrementAndGet() {
         return ++count;
     }
-
-    public long getCount() {
-        return count;
-    }
 }
