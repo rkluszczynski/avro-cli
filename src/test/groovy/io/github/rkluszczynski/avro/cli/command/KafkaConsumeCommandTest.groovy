@@ -9,30 +9,39 @@ import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.test.rule.KafkaEmbedded
 import org.springframework.kafka.test.utils.KafkaTestUtils
 import spock.lang.Shared
+import spock.lang.Unroll
 
 class KafkaConsumeCommandTest extends BaseTestSpecification {
     private commandService = new CliCommandService([new KafkaConsumption()])
 
     @ClassRule
     @Shared
-    KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, 1, 'testTopic0')
+    KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, 1,
+            'testTopic0-1', 'testTopic0-2', 'testTopic0-3')
 
-    def 'should consume earliest message from topic'() {
+    @Unroll
+    def 'should consume earliest message from topic with duration string #durationParameter'() {
         given:
         def senderProperties = KafkaTestUtils.senderProps(embeddedKafka.brokersAsString)
         def producerFactory = new DefaultKafkaProducerFactory<Integer, String>(senderProperties)
 
-        new KafkaTemplate<Integer, String>(producerFactory).send('testTopic0', 'test message')
+        new KafkaTemplate<Integer, String>(producerFactory).send(topicName, 'test message')
 
         when:
         commandService.executeCommand('kafka-consume',
                 '-b', embeddedKafka.brokersAsString,
-                '-t', 'testTopic0',
+                '-t', topicName,
                 '-o', 'earliest',
-                '--duration', '10s'
+                '--duration', durationParameter
         )
 
         then:
         trimmedOutput().endsWith('test message')
+
+        where:
+        topicName      | durationParameter
+        'testTopic0-1' | 'PT3S'
+        'testTopic0-2' | 'T3S'
+        'testTopic0-3' | '3S'
     }
 }
