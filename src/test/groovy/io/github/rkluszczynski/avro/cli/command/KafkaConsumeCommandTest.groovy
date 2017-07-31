@@ -11,6 +11,9 @@ import org.springframework.kafka.test.utils.KafkaTestUtils
 import spock.lang.Shared
 import spock.lang.Unroll
 
+import java.util.function.Predicate
+import java.util.stream.Collectors
+
 class KafkaConsumeCommandTest extends BaseTestSpecification {
     private commandService = new CliCommandService([new KafkaConsumption()])
 
@@ -57,30 +60,43 @@ class KafkaConsumeCommandTest extends BaseTestSpecification {
         trimmedOutput() == 'FAILED [java.time.format.DateTimeParseException] Text cannot be parsed to a Duration'
     }
 
-//    def 'should end without output when interrupting infinite consumption'() {
-//        setup:
-//        def th = runInThread {
-//            commandService.executeCommand('kafka-consume',
-//                    '-b', embeddedKafka.brokersAsString,
-//                    '-t', 'testTopic'
-//            )
-//        }
-//
-//        when:
-//        th.start()
-//        th.interrupt()
-//        th.join()
-//
-//        then:
-//        trimmedOutput() == ''
-//    }
-//
-//    private Thread runInThread(closure) {
-//        new Thread() {
-//            @Override
-//            void run() {
-//                closure()
-//            }
-//        }
-//    }
+    def 'should end without output when interrupting infinite consumption'() {
+        setup:
+        def th = runInThread {
+            commandService.executeCommand('kafka-consume',
+                    '-b', embeddedKafka.brokersAsString,
+                    '-t', 'testTopic'
+            )
+        }
+
+        when:
+        th.start()
+        th.interrupt()
+        th.join()
+
+        def output = Arrays.stream(
+                trimmedOutput()
+            .split(System.lineSeparator())
+        )
+        .filter(new Predicate<String>() {
+            @Override
+            boolean test(String s) {
+                return !s.contains(" INFO ") && !s.contains(" DEBUG ")
+            }
+        })
+        .collect(Collectors.toList())
+        .join(System.lineSeparator())
+
+        then:
+        output == ''
+    }
+
+    private Thread runInThread(closure) {
+        new Thread() {
+            @Override
+            void run() {
+                closure()
+            }
+        }
+    }
 }
