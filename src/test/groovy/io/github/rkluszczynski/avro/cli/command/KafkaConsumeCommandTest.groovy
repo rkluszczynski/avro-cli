@@ -11,8 +11,6 @@ import org.springframework.kafka.test.utils.KafkaTestUtils
 import spock.lang.Shared
 import spock.lang.Unroll
 
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 import java.util.function.Predicate
 import java.util.stream.Collectors
 
@@ -92,29 +90,29 @@ class KafkaConsumeCommandTest extends BaseTestSpecification {
 //        then:
 //        output == ''
 //    }
-
-    def 'should stop'() {
-        setup:
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-
-        when:
-        executor.submit(new Runnable() {
-            @Override
-            void run() {
-                commandService.executeCommand('kafka-consume',
-                        '-b', embeddedKafka.brokersAsString,
-                        '-t', 'testTopic'
-                )
-            }
-        })
-        sleep(3000)
-        def q = executor.shutdownNow()
-        def s = warnOrWorse(trimmedOutput())
-
-        then:
-        q.empty
-        s == ''
-    }
+//
+//    def 'should stop'() {
+//        setup:
+//        ExecutorService executor = Executors.newSingleThreadExecutor();
+//
+//        when:
+//        executor.submit(new Runnable() {
+//            @Override
+//            void run() {
+//                commandService.executeCommand('kafka-consume',
+//                        '-b', embeddedKafka.brokersAsString,
+//                        '-t', 'testTopic'
+//                )
+//            }
+//        })
+//        sleep(3000)
+//        def q = executor.shutdownNow()
+//        def s = warnOrWorse(trimmedOutput())
+//
+//        then:
+//        q.empty
+//        s == ''
+//    }
 
     private String warnOrWorse(String output) {
         output
