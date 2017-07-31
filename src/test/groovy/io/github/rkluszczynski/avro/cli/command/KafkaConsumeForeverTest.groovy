@@ -1,41 +1,31 @@
 package io.github.rkluszczynski.avro.cli.command
 
-import io.github.rkluszczynski.avro.cli.CliCommandService
+import io.github.rkluszczynski.avro.cli.BaseTestSpecification
+import io.github.rkluszczynski.avro.cli.CliMainParameters
+import io.github.rkluszczynski.avro.cli.command.kafka.KafkaConsumption
 import org.junit.ClassRule
-import org.junit.Rule
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.rule.OutputCapture
 import org.springframework.kafka.test.rule.KafkaEmbedded
-import org.springframework.test.context.ContextConfiguration
 import spock.lang.Shared
-import spock.lang.Specification
 
 import java.util.function.Predicate
 import java.util.stream.Collectors
 
-@ContextConfiguration
-@SpringBootTest
-class KafkaConsumeForeverTest extends Specification {
-
-    @Rule
-    OutputCapture capture = new OutputCapture()
-
+//@ContextConfiguration
+//@SpringBootTest
+class KafkaConsumeForeverTest extends BaseTestSpecification {
     @ClassRule
     @Shared
     KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, 1, 'testTopic')
 
-    @Autowired
-    CliCommandService commandService
-
-
     def 'should end without output when interrupting infinite consumption'() {
         setup:
+        def kafkaConsumeCommand = new KafkaConsumption()
+        def cmdOutput = ''
         def th = runInThread {
-            commandService.executeCommand('kafka-consume',
-                    '-b', embeddedKafka.brokersAsString,
-                    '-t', 'testTopic'
-            )
+            kafkaConsumeCommand.consumeParameters.bootstrapServers = embeddedKafka.brokersAsString
+            kafkaConsumeCommand.consumeParameters.topics = ['testTopic']
+
+            cmdOutput = kafkaConsumeCommand.execute(new CliMainParameters())
         }
         capture.flush()
         capture.reset()
@@ -61,6 +51,7 @@ class KafkaConsumeForeverTest extends Specification {
 
         then:
         capture.toString().trim() == ''
+        cmdOutput == ''
     }
 //
 //    def 'should stop'() {

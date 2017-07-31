@@ -61,29 +61,6 @@ class KafkaConsumeCommandTest extends BaseTestSpecification {
         trimmedOutput() == 'FAILED [java.time.format.DateTimeParseException] Text cannot be parsed to a Duration'
     }
 
-//    def 'should end'() {
-//        setup:
-//        def th = runInThread {
-//            sleep(5000)
-//            kafkaConsumeCommand.awaitLatch.countDown()
-//        }
-//
-//        when:
-//        th.start()
-//
-//        and:
-//        commandService.executeCommand('kafka-consume',
-//                '-b', embeddedKafka.brokersAsString,
-//                '-t', 'testTopic'
-//        )
-//
-//        and:
-//        th.join()
-//
-//        then:
-//        trimmedOutput() == ''
-//    }
-
 //    def 'should end without output when interrupting infinite consumption'() {
 //        setup:
 //        def th = runInThread {
