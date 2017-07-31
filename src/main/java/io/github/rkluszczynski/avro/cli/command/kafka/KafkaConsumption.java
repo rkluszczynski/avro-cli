@@ -17,6 +17,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 @Component
 public class KafkaConsumption implements CliCommand {
     private final ConsumeParameters consumeParameters = new ConsumeParameters();
+    private final CountDownLatch awaitLatch = new CountDownLatch(1);
 
     @Override
     public String execute(CliMainParameters mainParameters) {
@@ -29,7 +30,6 @@ public class KafkaConsumption implements CliCommand {
 
         try {
             final Duration consumeDuration = consumeParameters.getDuration();
-            final CountDownLatch awaitLatch = new CountDownLatch(1);
 
             if (isNull(consumeDuration)) {
                 awaitLatch.await();
