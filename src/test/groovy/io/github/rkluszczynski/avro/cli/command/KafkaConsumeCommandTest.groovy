@@ -11,6 +11,8 @@ import org.springframework.kafka.test.utils.KafkaTestUtils
 import spock.lang.Shared
 import spock.lang.Unroll
 
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import java.util.function.Predicate
 import java.util.stream.Collectors
 
@@ -60,35 +62,72 @@ class KafkaConsumeCommandTest extends BaseTestSpecification {
         trimmedOutput() == 'FAILED [java.time.format.DateTimeParseException] Text cannot be parsed to a Duration'
     }
 
-    def 'should end without output when interrupting infinite consumption'() {
+//    def 'should end without output when interrupting infinite consumption'() {
+//        setup:
+//        def th = runInThread {
+//            commandService.executeCommand('kafka-consume',
+//                    '-b', embeddedKafka.brokersAsString,
+//                    '-t', 'testTopic'
+//            )
+//        }
+//
+//        when:
+//        th.start()
+//        th.interrupt()
+//        th.join()
+//
+//        def output = Arrays.stream(
+//                trimmedOutput()
+//            .split(System.lineSeparator())
+//        )
+//        .filter(new Predicate<String>() {
+//            @Override
+//            boolean test(String s) {
+//                return !s.contains(" INFO ") && !s.contains(" DEBUG ")
+//            }
+//        })
+//        .collect(Collectors.toList())
+//        .join(System.lineSeparator())
+//
+//        then:
+//        output == ''
+//    }
+
+    def 'should stop'() {
         setup:
-        def th = runInThread {
-            commandService.executeCommand('kafka-consume',
-                    '-b', embeddedKafka.brokersAsString,
-                    '-t', 'testTopic'
-            )
-        }
+        ExecutorService executor = Executors.newSingleThreadExecutor();
 
         when:
-        th.start()
-        th.interrupt()
-        th.join()
-
-        def output = Arrays.stream(
-                trimmedOutput()
-            .split(System.lineSeparator())
-        )
-        .filter(new Predicate<String>() {
+        executor.submit(new Runnable() {
             @Override
-            boolean test(String s) {
-                return !s.contains(" INFO ") && !s.contains(" DEBUG ")
+            void run() {
+                commandService.executeCommand('kafka-consume',
+                        '-b', embeddedKafka.brokersAsString,
+                        '-t', 'testTopic'
+                )
             }
         })
-        .collect(Collectors.toList())
-        .join(System.lineSeparator())
+        sleep(3000)
+        def q = executor.shutdownNow()
+        def s = warnOrWorse(trimmedOutput())
 
         then:
-        output == ''
+        q.empty
+        s == ''
+    }
+
+    private String warnOrWorse(String output) {
+        output
+                .tokenize(System.lineSeparator())
+                .stream()
+                .filter(new Predicate<String>() {
+            @Override
+            boolean test(String s) {
+                return !s.contains(" INFO ") && !s.contains(" DEBUG ") && !s.contains(" = ")
+            }
+        })
+                .collect(Collectors.toList())
+                .join(System.lineSeparator())
     }
 
     private Thread runInThread(closure) {
