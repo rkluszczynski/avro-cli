@@ -11,9 +11,6 @@ import org.springframework.kafka.test.utils.KafkaTestUtils
 import spock.lang.Shared
 import spock.lang.Unroll
 
-import java.util.function.Predicate
-import java.util.stream.Collectors
-
 class KafkaConsumeCommandTest extends BaseTestSpecification {
     private commandService = new CliCommandService([new KafkaConsumption()])
 
@@ -43,9 +40,9 @@ class KafkaConsumeCommandTest extends BaseTestSpecification {
 
         where:
         topicName      | durationParameter
-        'testTopic0-1' | 'PT2S'
-        'testTopic0-2' | 'T2S'
-        'testTopic0-3' | '2S'
+        'testTopic0-1' | 'PT3S'
+        'testTopic0-2' | 'T3S'
+        'testTopic0-3' | '3S'
     }
 
     def 'should fail when duration parameter is not parsable'() {
@@ -60,37 +57,6 @@ class KafkaConsumeCommandTest extends BaseTestSpecification {
         trimmedOutput() == 'FAILED [java.time.format.DateTimeParseException] Text cannot be parsed to a Duration'
     }
 
-//    def 'should end without output when interrupting infinite consumption'() {
-//        setup:
-//        def th = runInThread {
-//            commandService.executeCommand('kafka-consume',
-//                    '-b', embeddedKafka.brokersAsString,
-//                    '-t', 'testTopic'
-//            )
-//        }
-//
-//        when:
-//        th.start()
-//        th.interrupt()
-//        th.join()
-//
-//        def output = Arrays.stream(
-//                trimmedOutput()
-//            .split(System.lineSeparator())
-//        )
-//        .filter(new Predicate<String>() {
-//            @Override
-//            boolean test(String s) {
-//                return !s.contains(" INFO ") && !s.contains(" DEBUG ")
-//            }
-//        })
-//        .collect(Collectors.toList())
-//        .join(System.lineSeparator())
-//
-//        then:
-//        output == ''
-//    }
-//
 //    def 'should stop'() {
 //        setup:
 //        ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -113,27 +79,4 @@ class KafkaConsumeCommandTest extends BaseTestSpecification {
 //        q.empty
 //        s == ''
 //    }
-
-    private String warnOrWorse(String output) {
-        output
-                .tokenize(System.lineSeparator())
-                .stream()
-                .filter(new Predicate<String>() {
-            @Override
-            boolean test(String s) {
-                return !s.contains(" INFO ") && !s.contains(" DEBUG ") && !s.contains(" = ")
-            }
-        })
-                .collect(Collectors.toList())
-                .join(System.lineSeparator())
-    }
-
-    private Thread runInThread(closure) {
-        new Thread() {
-            @Override
-            void run() {
-                closure()
-            }
-        }
-    }
 }
