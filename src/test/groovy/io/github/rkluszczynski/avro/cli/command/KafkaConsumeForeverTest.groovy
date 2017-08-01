@@ -22,21 +22,21 @@ class KafkaConsumeForeverTest extends BaseTestSpecification {
         kafkaConsumeCommand.consumeParameters.topics = ['testTopic']
     }
 
-
-
     def 'should end without output when interrupting infinite consumption'() {
         setup:
         def commandOutput = ''
-        def th = runInThread { commandOutput = kafkaConsumeCommand.execute(new CliMainParameters()) }
-
+        def commandThread = runInThread {
+            commandOutput = kafkaConsumeCommand.execute(new CliMainParameters())
+        }
         capture.flush()
         capture.reset()
 
         when:
-        th.start()
-        sleep(7000)
-        th.interrupt()
-        th.join()
+        commandThread.start()
+        sleep(3000)
+
+        commandThread.interrupt()
+        commandThread.join()
 
         then:
         trimmedOutput() == ''
@@ -45,46 +45,25 @@ class KafkaConsumeForeverTest extends BaseTestSpecification {
 
     def 'should end'() {
         setup:
-        def cmdOutput = ''
-        def th = runInThread { cmdOutput = kafkaConsumeCommand.execute(new CliMainParameters()) }
+        def commandOutput = ''
+        def commandThread = runInThread {
+            commandOutput = kafkaConsumeCommand.execute(new CliMainParameters())
+        }
 
         capture.flush()
         capture.reset()
 
         when:
-        th.start()
-        sleep(7000)
+        commandThread.start()
+        sleep(3000)
+
         kafkaConsumeCommand.awaitLatch.countDown()
-        th.join()
+        commandThread.join()
 
         then:
         trimmedOutput() == ''
-        cmdOutput == ''
+        commandOutput == ''
     }
-
-//
-//    def 'should stop'() {
-//        setup:
-//        ExecutorService executor = Executors.newSingleThreadExecutor();
-//
-//        when:
-//        executor.submit(new Runnable() {
-//            @Override
-//            void run() {
-//                commandService.executeCommand('kafka-consume',
-//                        '-b', embeddedKafka.brokersAsString,
-//                        '-t', 'testTopic'
-//                )
-//            }
-//        })
-//        sleep(3000)
-//        def q = executor.shutdownNow()
-//        def s = warnOrWorse(trimmedOutput())
-//
-//        then:
-//        q.empty
-//        s == ''
-//    }
 
     private String warnOrWorse(String output) {
         output
