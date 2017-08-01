@@ -4,30 +4,26 @@ import io.github.rkluszczynski.avro.cli.CliMainParameters
 import io.github.rkluszczynski.avro.cli.command.kafka.KafkaConsumption
 import org.junit.ClassRule
 import org.springframework.kafka.test.rule.KafkaEmbedded
-import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
 import java.util.function.Predicate
 import java.util.stream.Collectors
 
-@Ignore
 class KafkaConsumeForeverTest extends Specification {
     @ClassRule
     @Shared
     private KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, 1, 'testTopic')
-    @Shared
-    private KafkaConsumption kafkaConsumeCommand = new KafkaConsumption()
-
-    def setupSpec() {
-        kafkaConsumeCommand.consumeParameters.bootstrapServers = embeddedKafka.brokersAsString
-        kafkaConsumeCommand.consumeParameters.topics = ['testTopic']
-    }
 
     def 'should end without output when interrupting infinite consumption'() {
         setup:
         def commandOutput = ''
         def commandThread = runInThread {
+            KafkaConsumption kafkaConsumeCommand = new KafkaConsumption()
+
+            kafkaConsumeCommand.consumeParameters.bootstrapServers = embeddedKafka.brokersAsString
+            kafkaConsumeCommand.consumeParameters.topics = ['testTopic']
+
             commandOutput = kafkaConsumeCommand.execute(new CliMainParameters())
         }
 //        capture.flush()
@@ -49,6 +45,11 @@ class KafkaConsumeForeverTest extends Specification {
         setup:
         def commandOutput = ''
         def commandThread = runInThread {
+            KafkaConsumption kafkaConsumeCommand = new KafkaConsumption()
+
+            kafkaConsumeCommand.consumeParameters.bootstrapServers = embeddedKafka.brokersAsString
+            kafkaConsumeCommand.consumeParameters.topics = ['testTopic']
+
             commandOutput = kafkaConsumeCommand.execute(new CliMainParameters())
         }
 
