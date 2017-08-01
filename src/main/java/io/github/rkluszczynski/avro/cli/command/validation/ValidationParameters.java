@@ -61,7 +61,7 @@ class ValidationParameters extends CliCommandParameters {
     }
 
     private static class CompatibilityStrategyConverter extends EnumConverter<CompatibilityStrategy> {
-        public CompatibilityStrategyConverter(String optionName, Class<CompatibilityStrategy> clazz) {
+        private CompatibilityStrategyConverter(String optionName, Class<CompatibilityStrategy> clazz) {
             super(optionName, clazz);
         }
     }
