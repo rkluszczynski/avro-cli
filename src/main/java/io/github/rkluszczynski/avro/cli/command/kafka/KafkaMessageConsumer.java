@@ -38,10 +38,6 @@ class KafkaMessageConsumer {
         return listenerContainer;
     }
 
-    ExtendedMessageListener getMessageListener() {
-        return messageListener;
-    }
-
     private ExtendedMessageListener createMessageListener(MessageTypeParameter messageType) {
         return new TextMessageListener();
     }

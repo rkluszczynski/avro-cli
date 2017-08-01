@@ -21,9 +21,7 @@ class ConsumeParameters extends CliCommandParameters {
             names = {"--bootstrap-servers", "-b"},
             description = "Bootstrap servers."
     )
-//    private String bootstrapServers = "localhost:9092";
-    private String bootstrapServers = "kasiaproddc4-fbroker21.kasia-prod.pl-kra-6.dc4.local:9092,kasiaproddc4-fbroker22.kasia-prod.pl-kra-6.dc4.local:9092,kasiaproddc4-fbroker23.kasia-prod.pl-kra-6.dc4.local:9092,kasiaproddc4-fbroker24.kasia-prod.pl-kra-6.dc4.local:9092,kasiaproddc4-fbroker25.kasia-prod.pl-kra-6.dc4.local:9092,kasiaproddc4-fbroker26.kasia-prod.pl-kra-6.dc4.local:9092,kasiaproddc4-fbroker27.kasia-prod.pl-kra-6.dc4.local:9092,kasiaproddc4-fbroker28.kasia-prod.pl-kra-6.dc4.local:9092,kasiaproddc4-fbroker29.kasia-prod.pl-kra-6.dc4.local:9092,kasiaproddc4-fbroker30.kasia-prod.pl-kra-6.dc4.local:9092";
-//    private String bootstrapServers = "192.168.1.6:9092";
+    private String bootstrapServers = "localhost:9092";
 
     @Parameter(
             names = {"--topic", "-t"},
