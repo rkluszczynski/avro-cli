@@ -39,9 +39,9 @@ class KafkaConsumeCommandTest extends BaseTestSpecification {
 
         where:
         topicName      | durationParameter
-        'testTopic0-1' | 'PT3S'
-        'testTopic0-2' | 'T3S'
-        'testTopic0-3' | '3S'
+        'testTopic0-1' | 'PT4S'
+        'testTopic0-2' | 'T4S'
+        'testTopic0-3' | '4S'
     }
 
     def 'should fail when duration parameter is not parsable'() {
