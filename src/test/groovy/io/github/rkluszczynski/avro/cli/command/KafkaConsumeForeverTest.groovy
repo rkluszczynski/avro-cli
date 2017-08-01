@@ -10,23 +10,25 @@ import spock.lang.Shared
 import java.util.function.Predicate
 import java.util.stream.Collectors
 
-//@ContextConfiguration
-//@SpringBootTest
 class KafkaConsumeForeverTest extends BaseTestSpecification {
     @ClassRule
     @Shared
-    KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, 1, 'testTopic')
+    private KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, 1, 'testTopic')
+    @Shared
+    private KafkaConsumption kafkaConsumeCommand = new KafkaConsumption()
+
+    def setupSpec() {
+        kafkaConsumeCommand.consumeParameters.bootstrapServers = embeddedKafka.brokersAsString
+        kafkaConsumeCommand.consumeParameters.topics = ['testTopic']
+    }
+
+
 
     def 'should end without output when interrupting infinite consumption'() {
         setup:
-        def kafkaConsumeCommand = new KafkaConsumption()
-        def cmdOutput = ''
-        def th = runInThread {
-            kafkaConsumeCommand.consumeParameters.bootstrapServers = embeddedKafka.brokersAsString
-            kafkaConsumeCommand.consumeParameters.topics = ['testTopic']
+        def commandOutput = ''
+        def th = runInThread { commandOutput = kafkaConsumeCommand.execute(new CliMainParameters()) }
 
-            cmdOutput = kafkaConsumeCommand.execute(new CliMainParameters())
-        }
         capture.flush()
         capture.reset()
 
@@ -36,23 +38,30 @@ class KafkaConsumeForeverTest extends BaseTestSpecification {
         th.interrupt()
         th.join()
 
-//        def output = Arrays.stream(
-//                trimmedOutput()
-//            .split(System.lineSeparator())
-//        )
-//        .filter(new Predicate<String>() {
-//            @Override
-//            boolean test(String s) {
-//                return !s.contains(" INFO ") && !s.contains(" DEBUG ")
-//            }
-//        })
-//        .collect(Collectors.toList())
-//        .join(System.lineSeparator())
+        then:
+        trimmedOutput() == ''
+        commandOutput == ''
+    }
+
+    def 'should end'() {
+        setup:
+        def cmdOutput = ''
+        def th = runInThread { cmdOutput = kafkaConsumeCommand.execute(new CliMainParameters()) }
+
+        capture.flush()
+        capture.reset()
+
+        when:
+        th.start()
+        sleep(7000)
+        kafkaConsumeCommand.awaitLatch.countDown()
+        th.join()
 
         then:
-        capture.toString().trim() == ''
+        trimmedOutput() == ''
         cmdOutput == ''
     }
+
 //
 //    def 'should stop'() {
 //        setup:

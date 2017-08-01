@@ -15,8 +15,7 @@ import java.util.function.Predicate
 import java.util.stream.Collectors
 
 class KafkaConsumeCommandTest extends BaseTestSpecification {
-    private kafkaConsumeCommand = new KafkaConsumption()
-    private commandService = new CliCommandService([kafkaConsumeCommand])
+    private commandService = new CliCommandService([new KafkaConsumption()])
 
     @ClassRule
     @Shared
