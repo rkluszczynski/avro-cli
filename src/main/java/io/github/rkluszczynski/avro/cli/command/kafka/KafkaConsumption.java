@@ -1,6 +1,7 @@
 package io.github.rkluszczynski.avro.cli.command.kafka;
 
 import io.github.rkluszczynski.avro.cli.CliMainParameters;
+import io.github.rkluszczynski.avro.cli.CommandException;
 import io.github.rkluszczynski.avro.cli.command.CliCommand;
 import io.github.rkluszczynski.avro.cli.command.CliCommandParameters;
 import org.springframework.kafka.listener.KafkaMessageListenerContainer;
@@ -37,7 +38,7 @@ public class KafkaConsumption implements CliCommand {
                 awaitLatch.await(consumeDuration.toMillis(), MILLISECONDS);
             }
         } catch (InterruptedException ex) {
-            System.out.print(""); // FIXME
+            throw new CommandException("Kafka consumer interrupted!", ex);
         } finally {
             listenerContainer.stop();
         }
