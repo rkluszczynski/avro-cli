@@ -1,20 +1,24 @@
 package io.github.rkluszczynski.avro.cli.command
 
-import io.github.rkluszczynski.avro.cli.BaseTestSpecification
 import io.github.rkluszczynski.avro.cli.CliMainParameters
 import io.github.rkluszczynski.avro.cli.command.kafka.KafkaConsumption
 import org.junit.ClassRule
+import org.junit.Rule
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.rule.OutputCapture
 import org.springframework.kafka.test.rule.KafkaEmbedded
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Shared
+import spock.lang.Specification
 
 import java.util.function.Predicate
 import java.util.stream.Collectors
 
 @ContextConfiguration
 @SpringBootTest
-class KafkaConsumeForeverTest extends BaseTestSpecification {
+class KafkaConsumeForeverTest extends Specification {
+    @Rule
+    OutputCapture capture = new OutputCapture()
     @ClassRule
     @Shared
     private KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, 1, 'testTopic')
@@ -43,7 +47,7 @@ class KafkaConsumeForeverTest extends BaseTestSpecification {
         commandThread.join()
 
         then:
-        trimmedOutput() == ''
+        capture.toString().trim() == ''
         commandOutput == ''
     }
 
@@ -65,7 +69,7 @@ class KafkaConsumeForeverTest extends BaseTestSpecification {
         commandThread.join()
 
         then:
-        trimmedOutput() == ''
+        capture.toString().trim() == ''
         commandOutput == ''
     }
 
