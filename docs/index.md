@@ -66,6 +66,29 @@ Usage: fingerprint [options]
       Source of schema to read.
 ```
 
+### kafka-consume: Consume records from Kafka
+
+```bash
+Usage: kafka-consume [options]
+  Options:
+    --bootstrap-servers, -b
+      Bootstrap servers.
+      Default: localhost:9092
+    --duration
+      Read duration in ISO-8601 format (PnDTnHnMn.nS).
+    --message-type, -m
+      Topic message type.
+      Default: TEXT
+      Possible Values: [TEXT]
+    --offset-reset, -o
+      Offset reset consumer value.
+      Default: LATEST
+      Possible Values: [LATEST, EARLIEST]
+  * --topic, -t
+      Kafka topic name.
+      Default: []
+```
+
 ### normalize: Normalize schema to canonical parsing form
 
 ```
@@ -123,6 +146,7 @@ java -jar avro-cli-0.2.6.jar validate -s http://localhost:8000/schema-no-fields.
 
 # Credits
 
- * [Apache Avro™ 1.8.1 Specification](http://avro.apache.org/docs/1.8.1/spec.html)
- * [Spring boot](https://projects.spring.io/spring-boot)
+ * [Apache Avro™ Specification](http://avro.apache.org/docs/current/spec.html)
  * [JCommander](http://jcommander.org)
+ * [Spring Boot](https://projects.spring.io/spring-boot)
+ * [Spring for Apache Kafka](https://projects.spring.io/spring-kafka)

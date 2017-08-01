@@ -98,5 +98,5 @@ public class CliCommandService {
 
     private Log log = LogFactory.getLog(CliCommandService.class);
 
-    private static final String PROGRAM_NAME = "avro-cli";
+    public static final String PROGRAM_NAME = "avro-cli";
 }

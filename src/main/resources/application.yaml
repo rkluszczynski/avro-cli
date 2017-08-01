@@ -1,3 +1,7 @@
-spring.main.banner-mode: "off"
+schema-registry.url: http://schema-registry.allegrogroup.com
+
+spring.main:
+  banner-mode: 'off'
+  web-environment: 'false'
 
 logging.level.: WARN
