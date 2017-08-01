@@ -4,12 +4,14 @@ import io.github.rkluszczynski.avro.cli.CliMainParameters
 import io.github.rkluszczynski.avro.cli.command.kafka.KafkaConsumption
 import org.junit.ClassRule
 import org.springframework.kafka.test.rule.KafkaEmbedded
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
 import java.util.function.Predicate
 import java.util.stream.Collectors
 
+@Ignore
 class KafkaConsumeForeverTest extends Specification {
     @ClassRule
     @Shared
