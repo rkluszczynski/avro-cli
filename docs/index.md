@@ -68,7 +68,7 @@ Usage: fingerprint [options]
 
 ### kafka-consume: Consume records from Kafka
 
-```bash
+```
 Usage: kafka-consume [options]
   Options:
     --bootstrap-servers, -b
