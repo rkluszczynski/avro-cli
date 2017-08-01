@@ -4,12 +4,16 @@ import io.github.rkluszczynski.avro.cli.BaseTestSpecification
 import io.github.rkluszczynski.avro.cli.CliMainParameters
 import io.github.rkluszczynski.avro.cli.command.kafka.KafkaConsumption
 import org.junit.ClassRule
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.kafka.test.rule.KafkaEmbedded
+import org.springframework.test.context.ContextConfiguration
 import spock.lang.Shared
 
 import java.util.function.Predicate
 import java.util.stream.Collectors
 
+@ContextConfiguration
+@SpringBootTest
 class KafkaConsumeForeverTest extends BaseTestSpecification {
     @ClassRule
     @Shared
