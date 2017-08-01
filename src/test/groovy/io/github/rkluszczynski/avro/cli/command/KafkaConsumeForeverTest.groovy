@@ -1,16 +1,16 @@
 package io.github.rkluszczynski.avro.cli.command
 
-import io.github.rkluszczynski.avro.cli.BaseTestSpecification
 import io.github.rkluszczynski.avro.cli.CliMainParameters
 import io.github.rkluszczynski.avro.cli.command.kafka.KafkaConsumption
 import org.junit.ClassRule
 import org.springframework.kafka.test.rule.KafkaEmbedded
 import spock.lang.Shared
+import spock.lang.Specification
 
 import java.util.function.Predicate
 import java.util.stream.Collectors
 
-class KafkaConsumeForeverTest extends BaseTestSpecification {
+class KafkaConsumeForeverTest extends Specification {
     @ClassRule
     @Shared
     private KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, 1, 'testTopic')
@@ -28,8 +28,8 @@ class KafkaConsumeForeverTest extends BaseTestSpecification {
         def commandThread = runInThread {
             commandOutput = kafkaConsumeCommand.execute(new CliMainParameters())
         }
-        capture.flush()
-        capture.reset()
+//        capture.flush()
+//        capture.reset()
 
         when:
         commandThread.start()
@@ -50,8 +50,8 @@ class KafkaConsumeForeverTest extends BaseTestSpecification {
             commandOutput = kafkaConsumeCommand.execute(new CliMainParameters())
         }
 
-        capture.flush()
-        capture.reset()
+//        capture.flush()
+//        capture.reset()
 
         when:
         commandThread.start()
