@@ -16,8 +16,7 @@ class KafkaConsumeCommandTest extends BaseTestSpecification {
 
     @ClassRule
     @Shared
-    KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, 1,
-            'testTopic', 'testTopic0-1', 'testTopic0-2', 'testTopic0-3')
+    KafkaEmbedded embeddedKafka = new KafkaEmbedded(1, true, 1, 'testTopic', 'testTopic0-1', 'testTopic0-2', 'testTopic0-3')
 
     @Unroll
     def 'should consume earliest message from topic with duration string #durationParameter'() {
