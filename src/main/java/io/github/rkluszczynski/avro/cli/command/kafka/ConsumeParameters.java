@@ -5,6 +5,7 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.beust.jcommander.converters.EnumConverter;
 import io.github.rkluszczynski.avro.cli.command.CliCommandParameters;
+import io.github.rkluszczynski.avro.cli.command.kafka.avro.DeserializationMode;
 import io.github.rkluszczynski.avro.cli.util.DurationGuessConverter;
 
 import java.time.Duration;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import static io.github.rkluszczynski.avro.cli.command.kafka.MessageTypeParameter.TEXT;
 import static io.github.rkluszczynski.avro.cli.command.kafka.OffsetResetParameter.LATEST;
+import static io.github.rkluszczynski.avro.cli.command.kafka.avro.DeserializationMode.HEURISTIC;
 
 @Parameters(
         commandDescription = "Consume records from Kafka."
@@ -43,6 +45,13 @@ class ConsumeParameters extends CliCommandParameters {
             description = "Offset reset consumer value."
     )
     private OffsetResetParameter offsetReset = LATEST;
+
+    @Parameter(
+            names = {"--deserialization-mode", "-d"},
+            converter = DeserializationModeConverter.class,
+            description = "Deserialization mode (applies only to Avro message type)."
+    )
+    private DeserializationMode deserializationMode = HEURISTIC;
 
     @Parameter(
             names = {"--duration"},
@@ -80,6 +89,12 @@ class ConsumeParameters extends CliCommandParameters {
     private static class OffsetResetParameterConverter extends EnumConverter<OffsetResetParameter> {
         private OffsetResetParameterConverter(String optionName, Class<OffsetResetParameter> clazz) {
             super(optionName, clazz);
+        }
+    }
+
+    private static class DeserializationModeConverter extends EnumConverter<DeserializationMode> {
+        private DeserializationModeConverter(String optionName, Class<DeserializationMode> clazz) {
+            super(optionName.replace('-', '_'), clazz);
         }
     }
 }
