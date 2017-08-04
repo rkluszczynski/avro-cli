@@ -94,7 +94,12 @@ class ConsumeParameters extends CliCommandParameters {
 
     private static class DeserializationModeConverter extends EnumConverter<DeserializationMode> {
         private DeserializationModeConverter(String optionName, Class<DeserializationMode> clazz) {
-            super(optionName.replace('-', '_'), clazz);
+            super(optionName, clazz);
+        }
+
+        @Override
+        public DeserializationMode convert(String value) {
+            return super.convert(value.replace('-', '_'));
         }
     }
 }

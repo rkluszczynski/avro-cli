@@ -1,8 +1,8 @@
 package io.github.rkluszczynski.avro.cli.command.kafka;
 
+import io.github.rkluszczynski.avro.cli.command.kafka.avro.AvroMessageListener;
 import io.github.rkluszczynski.avro.cli.command.kafka.text.TextMessageListener;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.KafkaMessageListenerContainer;
@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static io.github.rkluszczynski.avro.cli.CliCommandService.PROGRAM_NAME;
+import static io.github.rkluszczynski.avro.cli.command.kafka.MessageTypeParameter.AVRO;
 
 class KafkaMessageConsumer {
     private final KafkaMessageListenerContainer<String, String> listenerContainer;
@@ -23,14 +24,16 @@ class KafkaMessageConsumer {
                                  String[] topics,
                                  MessageTypeParameter messageType,
                                  OffsetResetParameter offsetReset) {
+        messageListener = createMessageListener(messageType);
+
         final Map<String, Object> consumerConfig =
                 consumerConfig(bootstrapServers, UUID.randomUUID().toString(), messageType, offsetReset);
+        messageListener.applyMessageListenerConfig(consumerConfig);
         final ConsumerFactory<String, String> consumerFactory = createConsumerFactory(consumerConfig);
 
         final ContainerProperties containerProperties = new ContainerProperties(topics);
         listenerContainer = new KafkaMessageListenerContainer<>(consumerFactory, containerProperties);
 
-        messageListener = createMessageListener(messageType);
         listenerContainer.setupMessageListener(messageListener);
     }
 
@@ -39,6 +42,9 @@ class KafkaMessageConsumer {
     }
 
     private ExtendedMessageListener createMessageListener(MessageTypeParameter messageType) {
+        if (AVRO.equals(messageType)) {
+            return new AvroMessageListener();
+        }
         return new TextMessageListener();
     }
 
@@ -51,21 +57,11 @@ class KafkaMessageConsumer {
                                                MessageTypeParameter messageType,
                                                OffsetResetParameter offsetReset) {
         Map<String, Object> consumerConfig = new HashMap<>();
-
         consumerConfig.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         consumerConfig.put(ConsumerConfig.GROUP_ID_CONFIG, String.format("%s-%s", PROGRAM_NAME, groupId));
 
-        consumerConfig.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        switch (messageType) {
-            case TEXT:
-                consumerConfig.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-                break;
-            default:
-                throw new RuntimeException("Unknown kafka message type!");
-        }
         consumerConfig.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, offsetReset.name().toLowerCase());
         consumerConfig.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "10");
-
         return consumerConfig;
     }
 
