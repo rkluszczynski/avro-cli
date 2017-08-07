@@ -1,5 +1,6 @@
 package io.github.rkluszczynski.avro.cli.command.conversion;
 
+import io.github.rkluszczynski.avro.cli.util.NativeAvroProcessor;
 import org.apache.avro.Schema;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ class ConversionService {
 
         try {
             if (rawConversion) {
-                RawConverterUtil.convertAvroToJson(inputStream, outputStream, schema);
+                NativeAvroProcessor.convertAvroToJson(inputStream, outputStream, schema, schema, true);
             } else {
                 FriendlyConverterUtil.convertAvroToJson(inputStream, outputStream, schema);
             }
@@ -36,7 +37,7 @@ class ConversionService {
 
         try {
             if (rawConversion) {
-                RawConverterUtil.convertJsonToAvro(inputStream, outputStream, schema);
+                NativeAvroProcessor.convertJsonToAvro(inputStream, outputStream, schema, schema);
             } else {
                 FriendlyConverterUtil.convertJsonToAvro(inputStream, outputStream, schema);
             }

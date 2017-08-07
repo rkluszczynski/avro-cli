@@ -7,6 +7,8 @@ import com.beust.jcommander.converters.EnumConverter;
 import io.github.rkluszczynski.avro.cli.command.CliCommandParameters;
 import io.github.rkluszczynski.avro.cli.command.kafka.avro.DeserializationMode;
 import io.github.rkluszczynski.avro.cli.util.DurationGuessConverter;
+import io.github.rkluszczynski.avro.cli.util.SchemaSourceConverter;
+import org.apache.avro.Schema;
 
 import java.time.Duration;
 import java.util.List;
@@ -54,6 +56,13 @@ class ConsumeParameters extends CliCommandParameters {
     private DeserializationMode deserializationMode = HEURISTIC;
 
     @Parameter(
+            names = {"--schema", "-s"},
+            converter = SchemaSourceConverter.class,
+            description = "Source of schema to read."
+    )
+    private List<Schema> schemas;
+
+    @Parameter(
             names = {"--duration"},
             converter = DurationGuessConverter.class,
             description = "Read duration in ISO-8601 format (PnDTnHnMn.nS)."
@@ -68,16 +77,24 @@ class ConsumeParameters extends CliCommandParameters {
         return topics;
     }
 
-    public Duration getDuration() {
-        return duration;
-    }
-
     public MessageTypeParameter getMessageType() {
         return messageType;
     }
 
     public OffsetResetParameter getOffsetReset() {
         return offsetReset;
+    }
+
+    public DeserializationMode getDeserializationMode() {
+        return deserializationMode;
+    }
+
+    public List<Schema> getSchemas() {
+        return schemas;
+    }
+
+    public Duration getDuration() {
+        return duration;
     }
 
     private static class MessageTypeParameterConverter extends EnumConverter<MessageTypeParameter> {

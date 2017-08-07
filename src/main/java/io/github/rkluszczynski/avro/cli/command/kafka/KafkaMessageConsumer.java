@@ -1,7 +1,5 @@
 package io.github.rkluszczynski.avro.cli.command.kafka;
 
-import io.github.rkluszczynski.avro.cli.command.kafka.avro.AvroMessageListener;
-import io.github.rkluszczynski.avro.cli.command.kafka.text.TextMessageListener;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
@@ -14,20 +12,18 @@ import java.util.Map;
 import java.util.UUID;
 
 import static io.github.rkluszczynski.avro.cli.CliCommandService.PROGRAM_NAME;
-import static io.github.rkluszczynski.avro.cli.command.kafka.MessageTypeParameter.AVRO;
+import static io.github.rkluszczynski.avro.cli.command.kafka.ExtendedMessageListener.ofConsumeParameters;
 
 class KafkaMessageConsumer {
     private final KafkaMessageListenerContainer<String, String> listenerContainer;
-    private final ExtendedMessageListener messageListener;
 
     private KafkaMessageConsumer(String bootstrapServers,
                                  String[] topics,
-                                 MessageTypeParameter messageType,
-                                 OffsetResetParameter offsetReset) {
-        messageListener = createMessageListener(messageType);
+                                 OffsetResetParameter offsetReset,
+                                 ExtendedMessageListener messageListener) {
+        final String groupId = UUID.randomUUID().toString();
 
-        final Map<String, Object> consumerConfig =
-                consumerConfig(bootstrapServers, UUID.randomUUID().toString(), messageType, offsetReset);
+        final Map<String, Object> consumerConfig = consumerConfig(bootstrapServers, groupId, offsetReset);
         messageListener.applyMessageListenerConfig(consumerConfig);
         final ConsumerFactory<String, String> consumerFactory = createConsumerFactory(consumerConfig);
 
@@ -41,20 +37,12 @@ class KafkaMessageConsumer {
         return listenerContainer;
     }
 
-    private ExtendedMessageListener createMessageListener(MessageTypeParameter messageType) {
-        if (AVRO.equals(messageType)) {
-            return new AvroMessageListener();
-        }
-        return new TextMessageListener();
-    }
-
     private ConsumerFactory<String, String> createConsumerFactory(Map<String, Object> consumerConfig) {
         return new DefaultKafkaConsumerFactory<>(consumerConfig);
     }
 
     private Map<String, Object> consumerConfig(String bootstrapServers,
                                                String groupId,
-                                               MessageTypeParameter messageType,
                                                OffsetResetParameter offsetReset) {
         Map<String, Object> consumerConfig = new HashMap<>();
         consumerConfig.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -65,13 +53,15 @@ class KafkaMessageConsumer {
         return consumerConfig;
     }
 
-    static KafkaMessageConsumer ofConsumeParameters(ConsumeParameters consumeParameters) {
+    static KafkaMessageConsumer ofCommandParameters(ConsumeParameters consumeParameters) {
+        final ExtendedMessageListener messageListener = ofConsumeParameters(consumeParameters);
+
         final List<String> topicsList = consumeParameters.getTopics();
         return new KafkaMessageConsumer(
                 consumeParameters.getBootstrapServers(),
                 topicsList.toArray(new String[topicsList.size()]),
-                consumeParameters.getMessageType(),
-                consumeParameters.getOffsetReset()
+                consumeParameters.getOffsetReset(),
+                messageListener
         );
     }
 }

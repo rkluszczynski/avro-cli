@@ -11,7 +11,7 @@ import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 
 import static io.github.rkluszczynski.avro.cli.command.CommandNames.KAFKA_CONSUME;
-import static io.github.rkluszczynski.avro.cli.command.kafka.KafkaMessageConsumer.ofConsumeParameters;
+import static io.github.rkluszczynski.avro.cli.command.kafka.KafkaMessageConsumer.ofCommandParameters;
 import static java.util.Objects.isNull;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -22,7 +22,7 @@ public class KafkaConsumption implements CliCommand {
 
     @Override
     public String execute(CliMainParameters mainParameters) {
-        final KafkaMessageConsumer messageConsumer = ofConsumeParameters(consumeParameters);
+        final KafkaMessageConsumer messageConsumer = ofCommandParameters(consumeParameters);
 
         final KafkaMessageListenerContainer<String, String> listenerContainer = messageConsumer.getListenerContainer();
         listenerContainer.start();

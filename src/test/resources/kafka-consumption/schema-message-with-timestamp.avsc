@@ -1,0 +1,18 @@
+{
+  "type": "record",
+  "name": "kafkaRecord",
+  "namespace": "io.github.rkluszczynski.avro.cli",
+  "fields": [
+    {
+      "name": "message",
+      "type": "string"
+    },
+    {
+      "name": "timestamp",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      }
+    }
+  ]
+}

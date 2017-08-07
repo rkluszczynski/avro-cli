@@ -1,4 +1,4 @@
-package io.github.rkluszczynski.avro.cli.command.conversion;
+package io.github.rkluszczynski.avro.cli.util;
 
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericDatumReader;
@@ -17,16 +17,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-final class RawConverterUtil {
+public final class NativeAvroProcessor {
 
-    static void convertAvroToJson(InputStream inputStream, OutputStream outputStream, Schema schema)
-            throws IOException {
-        DatumReader<Object> reader = new GenericDatumReader<>(schema);
-        DatumWriter<Object> writer = new GenericDatumWriter<>(schema);
+    public static void convertAvroToJson(InputStream inputStream,
+                                         OutputStream outputStream,
+                                         Schema readerSchema,
+                                         Schema writerSchema,
+                                         boolean prettyPrint) throws IOException {
+        DatumReader<Object> reader = new GenericDatumReader<>(readerSchema);
+        DatumWriter<Object> writer = new GenericDatumWriter<>(writerSchema);
 
         BinaryDecoder binaryDecoder = DecoderFactory.get().binaryDecoder(inputStream, null);
 
-        JsonEncoder jsonEncoder = EncoderFactory.get().jsonEncoder(schema, outputStream, true);
+        JsonEncoder jsonEncoder = EncoderFactory.get().jsonEncoder(writerSchema, outputStream, prettyPrint);
         Object datum = null;
         while (!binaryDecoder.isEnd()) {
             datum = reader.read(datum, binaryDecoder);
@@ -36,14 +39,16 @@ final class RawConverterUtil {
         outputStream.flush();
     }
 
-    static void convertJsonToAvro(InputStream inputStream, OutputStream outputStream, Schema schema)
-            throws IOException {
-        DatumReader<Object> reader = new GenericDatumReader<>(schema);
-        DatumWriter<Object> writer = new GenericDatumWriter<>(schema);
+    public static void convertJsonToAvro(InputStream inputStream,
+                                         OutputStream outputStream,
+                                         Schema readerSchema,
+                                         Schema writerSchema) throws IOException {
+        DatumReader<Object> reader = new GenericDatumReader<>(readerSchema);
+        DatumWriter<Object> writer = new GenericDatumWriter<>(writerSchema);
 
         Encoder binaryEncoder = EncoderFactory.get().binaryEncoder(outputStream, null);
 
-        JsonDecoder jsonDecoder = DecoderFactory.get().jsonDecoder(schema, inputStream);
+        JsonDecoder jsonDecoder = DecoderFactory.get().jsonDecoder(readerSchema, inputStream);
         Object datum = null;
         while (true) {
             try {
@@ -57,6 +62,6 @@ final class RawConverterUtil {
         outputStream.flush();
     }
 
-    private RawConverterUtil() {
+    private NativeAvroProcessor() {
     }
 }
