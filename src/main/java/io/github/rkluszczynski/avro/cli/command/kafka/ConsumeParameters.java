@@ -6,9 +6,9 @@ import com.beust.jcommander.Parameters;
 import com.beust.jcommander.converters.EnumConverter;
 import io.github.rkluszczynski.avro.cli.command.CliCommandParameters;
 import io.github.rkluszczynski.avro.cli.command.kafka.avro.DeserializationMode;
+import io.github.rkluszczynski.avro.cli.command.kafka.avro.SchemaProvider;
+import io.github.rkluszczynski.avro.cli.command.kafka.util.SchemaWrapperSourceConverter;
 import io.github.rkluszczynski.avro.cli.util.DurationGuessConverter;
-import io.github.rkluszczynski.avro.cli.util.SchemaSourceConverter;
-import org.apache.avro.Schema;
 
 import java.time.Duration;
 import java.util.List;
@@ -57,10 +57,10 @@ class ConsumeParameters extends CliCommandParameters {
 
     @Parameter(
             names = {"--schema", "-s"},
-            converter = SchemaSourceConverter.class,
+            converter = SchemaWrapperSourceConverter.class,
             description = "Source of schema to read."
     )
-    private List<Schema> schemas;
+    private List<SchemaProvider.SchemaWrapper> schemas;
 
     @Parameter(
             names = {"--duration"},
@@ -89,7 +89,7 @@ class ConsumeParameters extends CliCommandParameters {
         return deserializationMode;
     }
 
-    public List<Schema> getSchemas() {
+    public List<SchemaProvider.SchemaWrapper> getSchemas() {
         return schemas;
     }
 
