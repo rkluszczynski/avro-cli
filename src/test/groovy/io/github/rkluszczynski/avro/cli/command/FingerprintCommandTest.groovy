@@ -23,7 +23,7 @@ class FingerprintCommandTest extends BaseTestSpecification {
         algorithmName | fingerprintValue
         'CRC-64-AVRO' | '8db714e9ffa989a2'
         'MD5'         | 'f53ea32559669f2659949fe064c091c3'
-        'SHA-256'     | 'd8df4d61a04ac76369f63ef7861b98f9a9dddc28ef0d3d65326de5493c9'
+        'SHA-256'     | 'd8df4d61a004ac76369f63ef7861b908f90a9dddc28ef00d3d65326de50493c9'
     }
 
     def 'should calculate Rabin fingerprint'() {
@@ -34,7 +34,7 @@ class FingerprintCommandTest extends BaseTestSpecification {
         trimmedOutput() == '0918bd124db26deb'
     }
 
-    def 'should fail for no existing algorihtm'() {
+    def 'should fail for no existing algorithm'() {
         when:
         commandService.executeCommand('fingerprint', '-a', 'NOT-EXISTING-ALGORITHM',
                 '--schema', prepareSchemaPath('schema-no-fields.avsc')

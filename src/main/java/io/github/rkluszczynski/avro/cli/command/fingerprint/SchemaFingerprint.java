@@ -33,7 +33,7 @@ public class SchemaFingerprint implements CliCommand {
 
             String fingerprintString = "";
             for (byte b : bytes) {
-                fingerprintString += String.format("%x", b);
+                fingerprintString += String.format("%02x", b);
             }
             return fingerprintString;
         } catch (NoSuchAlgorithmException e) {
